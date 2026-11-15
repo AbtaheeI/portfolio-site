@@ -129,32 +129,6 @@
 </main>
 
 <footer class="foot"><div class="wrap"><span>Abtahee Islam · Sydney</span><span><a href="mailto:abtaheeislam@gmail.com">abtaheeislam@gmail.com</a></span></div></footer>
-<script>
-(function () {
-  var el = document.getElementById('map'), tip = document.getElementById('map-tip'), data = null;
-  try { if (localStorage.getItem('plain') === '1') return; } catch (_) {}
-  if (matchMedia('(prefers-reduced-motion: reduce)').matches || innerWidth < 640 || (navigator.connection && navigator.connection.saveData)) return;
-  try { var c = document.createElement('canvas'); if (!(c.getContext('webgl2') || c.getContext('webgl'))) return; } catch (_) { return; }
-  function fmt(n) { return n.toLocaleString('en-AU'); }
-  function show(i) {
-    if (i < 0 || !data) return;
-    var r = data[i];
-    tip.innerHTML = '<b>' + r.n + '</b><div class="muted" style="margin-bottom:6px">' + r.a + '</div>' +
-      '<div class="row"><span>score</span><span>' + r.s.toFixed(3) + '</span></div>' +
-      '<div class="row"><span>rank</span><span>' + (i + 1) + ' of ' + data.length + '</span></div>' +
-      '<div class="row"><span>transport stops</span><span>' + fmt(r.st) + '</span></div>' +
-      '<div class="row"><span>points of interest</span><span>' + fmt(r.poi) + '</span></div>' +
-      '<div class="row"><span>residents</span><span>' + fmt(r.pop) + '</span></div>';
-  }
-  var io = new IntersectionObserver(function (es) {
-    if (!es[0].isIntersecting) return;
-    io.disconnect();
-    Promise.all([import('../assets/map3d.js'), fetch('../data/sa2.json').then(function (r) { return r.json(); })])
-      .then(function (res) { data = res[1]; res[0].mount(el, data, { tooltip: tip, onHover: show }); })
-      .catch(function () {});
-  });
-  addEventListener('load', function () { io.observe(el); });
-})();
-</script>
+<script src="../assets/liveability.js" defer></script>
 </body>
 </html>

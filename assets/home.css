@@ -46,7 +46,7 @@ main{position:relative;min-height:100svh;overflow:hidden}
   .topics button{height:76px}
 }
 
-.bigname{position:absolute;left:50%;bottom:-.2em;transform:translateX(-50%);z-index:0;font:700 clamp(120px,21vw,330px)/1 var(--sans);letter-spacing:-.06em;color:#f5f5f7;white-space:nowrap;pointer-events:none;user-select:none}
+.bigname{position:absolute;left:50%;bottom:-.2em;transform:translateX(-50%);z-index:0;font:700 clamp(120px,21vw,330px)/1 var(--sans);letter-spacing:-.06em;color:rgba(0,0,0,.04);white-space:nowrap;pointer-events:none;user-select:none}
 @media (max-width:640px){.bigname{font-size:26vw}}
 
 /* ---------- conversation ---------- */
@@ -73,7 +73,7 @@ body.chat .home-foot{display:none}
 .msg.bot h2.topic-title{font:700 28px/1.15 var(--sans);color:var(--text);letter-spacing:-.025em}
 
 /* answers (real HTML, shown in the thread) */
-html.js .answers{display:none}
+.answers{display:none}
 .answers{max-width:760px;margin:0 auto;padding:0 var(--pad) 64px}
 .answers .answer{padding-top:40px}
 .answer>p{max-width:62ch}
@@ -122,3 +122,8 @@ a.pcard:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(0,0,0,.08)}
 .linkish:hover{color:var(--text)}
 
 @media (prefers-reduced-motion:reduce){.memoji,.msg{animation:none}}
+
+/* cursor ink (assets/fluid.js) */
+.ink{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+body.chat .ink{display:none}
+.topbar,.home-foot{z-index:30}
