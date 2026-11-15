@@ -9,12 +9,12 @@ import {
 } from 'three';
 
 const C = {
-  me: new Color('#5fd0c0'),
-  work: new Color('#eef0f5'),
-  tool: new Color('#7a8296'),
-  edge: new Color('#3a4252'),
-  edgeHot: new Color('#5fd0c0'),
-  dim: new Color('#1c2130')
+  me: new Color('#3d7bf5'),
+  work: new Color('#0f1115'),
+  tool: new Color('#a3a8b5'),
+  edge: new Color('#d9dce2'),
+  edgeHot: new Color('#3d7bf5'),
+  dim: new Color('#eef0f3')
 };
 
 function circMean(angles) {

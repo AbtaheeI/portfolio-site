@@ -3,287 +3,162 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Abtahee Islam · Software, SRE and data engineering</title>
-<meta name="description" content="Abtahee Islam. Software engineering student at the University of Sydney and incoming SRE intern at Nutanix. Backends, real-time apps and data pipelines.">
-<meta name="theme-color" content="#0b0d14">
-<meta property="og:title" content="Abtahee Islam">
-<meta property="og:description" content="Software engineering student in Sydney. Backends, real-time apps and data pipelines. SRE intern at Nutanix from December 2026.">
+<title>Abtahee Islam · Software Engineer</title>
+<meta name="description" content="Abtahee Islam. Software engineering student at the University of Sydney and incoming SRE intern at Nutanix. Ask me about my projects, skills and experience.">
+<meta name="theme-color" content="#ffffff">
+<meta property="og:title" content="Abtahee Islam · Software Engineer">
+<meta property="og:description" content="Computing student in Sydney. Backends, real-time apps and data pipelines. SRE intern at Nutanix from December 2026.">
 <meta property="og:image" content="https://abtaheeislam.com/assets/og.png">
 <meta property="og:url" content="https://abtaheeislam.com/">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="canonical" href="https://abtaheeislam.com/">
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-<link rel="preload" href="assets/fonts/ibm-plex-sans-latin-500-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/ibm-plex-sans-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/ibm-plex-sans-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="assets/site.css">
-<script>
-  // Plain view is remembered per browser. Runs before paint so there is no flash.
-  try { if (localStorage.getItem('plain') === '1') document.documentElement.classList.add('plain'); } catch (_) {}
-</script>
+<link rel="stylesheet" href="assets/home.css">
+<script>document.documentElement.classList.add('js');try{if(localStorage.getItem('plain')==='1')document.documentElement.classList.add('plain')}catch(_){}</script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"Person","name":"Abtahee Islam","url":"https://abtaheeislam.com","email":"mailto:abtaheeislam@gmail.com","affiliation":{"@type":"CollegeOrUniversity","name":"University of Sydney"},"address":{"@type":"PostalAddress","addressLocality":"Sydney","addressCountry":"AU"},"sameAs":["https://github.com/FromScratchToDataScientist","https://www.linkedin.com/in/abtahee-islam"]}
+{"@context":"https://schema.org","@type":"Person","name":"Abtahee Islam","jobTitle":"Software Engineering Student","url":"https://abtaheeislam.com","email":"mailto:abtaheeislam@gmail.com","affiliation":{"@type":"CollegeOrUniversity","name":"University of Sydney"},"address":{"@type":"PostalAddress","addressLocality":"Sydney","addressCountry":"AU"},"sameAs":["https://github.com/FromScratchToDataScientist","https://www.linkedin.com/in/abtahee-islam"]}
 </script>
 </head>
 <body>
-<a class="skip" href="#work">Skip to work</a>
+<a class="skip" href="#answers">Skip to content</a>
 
-<header class="nav">
-  <div class="wrap">
-    <div class="brand">
-      <a href="./">Abtahee Islam</a>
-      <a class="status-dot" id="status-dot" href="status/" data-state="unknown" title="Site status"><i></i><span>status</span></a>
-    </div>
-    <nav class="nav-links" aria-label="Main">
-      <a class="hide-sm" href="#work">Work</a>
-      <a class="hide-sm" href="#experience">Experience</a>
-      <a class="hide-sm" href="#site">This site</a>
-      <a href="CVA.pdf">Resume</a>
-      <button class="plain-toggle" id="plain-toggle" type="button" aria-pressed="false" title="Turn off the 3D and motion">plain view</button>
-    </nav>
-  </div>
+<header class="topbar">
+  <button class="mark" id="home-btn" type="button" aria-label="Back to start">
+    <span>A</span>
+    <i class="mark-dot" id="status-dot" data-state="unknown" title="Site status"></i>
+  </button>
+  <nav class="toplinks" aria-label="Main">
+    <a href="CVA.pdf">Resume</a>
+    <a href="https://github.com/FromScratchToDataScientist">GitHub</a>
+    <a class="hide-sm" href="status/">Status</a>
+  </nav>
 </header>
 
 <main id="main">
-  <section class="hero">
-    <div class="wrap hero-grid">
-      <div>
-        <h1 class="name">Abtahee Islam</h1>
-        <p class="role">I build backends, real-time apps and data pipelines.</p>
-        <p class="lede">I'm a penultimate-year Advanced Computing student at the University of Sydney. I like building the parts of software people don't see: the schema, the sync layer, the pipeline that has to run every day. In December I start as a Systems Reliability Engineering intern at Nutanix.</p>
-        <div class="actions">
-          <a class="btn btn-primary" href="CVA.pdf">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11"/><path d="m7 10 5 5 5-5"/><path d="M5 20h14"/></svg>
-            Resume
-          </a>
-          <a class="btn btn-quiet" href="https://github.com/FromScratchToDataScientist">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2 4.2 4.2 0 0 0-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3 0 0 0-6.2 0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2 0 0 0-.1 3.2A4.6 4.6 0 0 0 4 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg>
-            GitHub
-          </a>
-        </div>
-      </div>
-
-      <div>
-        <div class="map-wrap graph" id="graph">
-          <img class="poster" src="assets/graph-poster-640.webp" srcset="assets/graph-poster-640.webp 640w, assets/graph-poster.webp 1200w" sizes="(max-width: 900px) 90vw, 600px" width="1200" height="1200" alt="A graph with me in the middle, connected to my projects and experience, each connected to the tools it used." fetchpriority="low" decoding="async">
-        </div>
-        <p class="map-cap"><span>Me, what I've built, and what I built it with. Hover a project to see its stack, click to read about it, drag to turn.</span></p>
-      </div>
+  <section class="intro" id="intro" aria-labelledby="hello">
+    <p class="hey" id="hello">Hey, I'm Abtahee <span aria-hidden="true">👋</span></p>
+    <h1 class="role">Software Engineer</h1>
+    <p class="sub">Computing student at the University of Sydney. SRE intern at Nutanix from December.</p>
+    <div class="stage" id="graph">
+      <img class="poster" src="assets/graph-poster-640.webp" srcset="assets/graph-poster-640.webp 640w, assets/graph-poster.webp 1200w" sizes="360px" width="1200" height="1200" alt="A graph with me in the middle, connected to my projects and experience, and each of those to the tools it used." decoding="async">
     </div>
   </section>
 
-  <div class="wrap">
-    <dl class="facts">
-      <div><dt>Next</dt><dd>SRE intern, Nutanix<br><span class="muted">from December 2026</span></dd></div>
-      <div><dt>Studying</dt><dd>B. Advanced Computing, USyd<br><span class="muted">graduating late 2027</span></dd></div>
-      <div><dt>Based in</dt><dd>Sydney<br><span class="muted">full Australian working rights</span></dd></div>
-      <div><dt>Looking for</dt><dd>SWE, SRE and data engineering<br><span class="muted">internships and graduate roles</span></dd></div>
-    </dl>
+  <section class="thread" id="thread" aria-live="polite" aria-label="Answers"></section>
+
+  <div class="chatbar" id="chatbar">
+    <form class="ask" id="ask" autocomplete="off">
+      <label class="sr-only" for="q">Ask me anything</label>
+      <input id="q" name="q" type="text" maxlength="400" placeholder="Ask me anything" enterkeyhint="send">
+      <button type="submit" aria-label="Send"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></button>
+    </form>
+    <div class="topics" role="group" aria-label="Topics">
+      <button type="button" data-topic="me" data-q="Tell me about yourself"><svg viewBox="0 0 24 24" aria-hidden="true" style="color:#14a3a3"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"/></svg>Me</button>
+      <button type="button" data-topic="projects" data-q="What have you built?"><svg viewBox="0 0 24 24" aria-hidden="true" style="color:#1f9d63"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>Projects</button>
+      <button type="button" data-topic="skills" data-q="What do you work with?"><svg viewBox="0 0 24 24" aria-hidden="true" style="color:#7c5cf0"><path d="m12 3 9 5-9 5-9-5 9-5z"/><path d="m3 13 9 5 9-5"/></svg>Skills</button>
+      <button type="button" data-topic="experience" data-q="Where have you worked?"><svg viewBox="0 0 24 24" aria-hidden="true" style="color:#d64f8a"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>Experience</button>
+      <button type="button" data-topic="contact" data-q="How can I reach you?"><svg viewBox="0 0 24 24" aria-hidden="true" style="color:#d9871c"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>Contact</button>
+    </div>
   </div>
 
-  <section class="section" id="work">
-    <div class="wrap">
-      <div class="section-head">
-        <h2>Selected work</h2>
-        <p>Each one has a write-up with the design decisions and what I'd change.</p>
-      </div>
+  <div class="bigname" aria-hidden="true">Abtahee</div>
 
-      <div class="work">
-        <article class="work-item">
-          <div>
-            <div class="kicker">Spatial data pipeline</div>
-            <h3>Greater Sydney Liveability Index</h3>
-            <p>A PostgreSQL and PostGIS database that pulls live NSW Government data, maps every transport stop, school, business and point of interest to its SA2 region with spatial joins, and scores each region with a composite of four z-scores. The write-up has the 3D map it produces.</p>
-            <ul class="stack"><li>PostgreSQL</li><li>PostGIS</li><li>Python</li><li>NSW Gov API</li><li>GiST indexes</li><li>Plotly</li></ul>
-            <div class="work-links">
-              <a href="work/liveability-index.html">Read the write-up <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></a>
-              <a href="liveability_map.html">Open the interactive map <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg></a>
-            </div>
-          </div>
-          <div class="figures">
-            <div class="figure"><div class="v">66</div><div class="k">SA2 regions scored</div></div>
-            <div class="figure"><div class="v">5,870</div><div class="k">transport stops joined with ST_Within</div></div>
-            <div class="figure"><div class="v">905k</div><div class="k">residents covered</div></div>
-          </div>
-        </article>
-
-        <article class="work-item">
-          <div>
-            <div class="kicker">Real-time web app</div>
-            <h3>GroupSync</h3>
-            <p>A real-time collaboration platform for student group projects, built for INFO2222. I designed the client-server contracts, the Socket.io sync that keeps everyone's view consistent, and the SQLite schema. An AI step reads the chat and turns commitments ("I'll do the slides by Friday") into action items.</p>
-            <ul class="stack"><li>Next.js</li><li>Node.js</li><li>Socket.io</li><li>SQLite</li></ul>
-            <div class="work-links">
-              <a href="work/groupsync.html">Read the write-up <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></a>
-            </div>
-          </div>
-          <div class="figures">
-            <div class="figure"><div class="v">Live</div><div class="k">sync over Socket.io</div></div>
-            <div class="figure"><div class="v">AI</div><div class="k">commitment detection in chat</div></div>
-            <div class="figure"><div class="v">SQLite</div><div class="k">single-file persistence</div></div>
-          </div>
-        </article>
-
-        <article class="work-item">
-          <div>
-            <div class="kicker">Data modelling</div>
-            <h3>Aircraft Maintenance Information System</h3>
-            <p>A relational model for maintenance testing at Western Sydney Airport, designed from a CASA-regulated requirements brief. Chen ERD first, then SQL reports for test history, technician workload and pass rates by test specification.</p>
-            <ul class="stack"><li>SQL</li><li>PostgreSQL</li><li>Chen ERD</li><li>Normalisation</li></ul>
-            <div class="work-links">
-              <a href="work/aircraft-maintenance.html">Read the write-up <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></a>
-            </div>
-          </div>
-          <div class="figures">
-            <div class="figure"><div class="v">5</div><div class="k">entities, from a real brief</div></div>
-            <div class="figure"><div class="v">3</div><div class="k">stakeholder report queries</div></div>
-            <div class="figure"><div class="v">CASA</div><div class="k">regulatory constraints</div></div>
-          </div>
-        </article>
-      </div>
-
-      <ul class="more">
-        <li><span class="t">NYC housing price models</span><span>R pipeline on 1,734 sales. Stepwise AIC regression against a random forest, checked with k-fold cross-validation. Best model R² 0.64.</span><a class="link" href="work/nyc-housing.html">Write-up</a></li>
-        <li><span class="t">Traceroute from scratch</span><span>Bash. Sends probes with increasing TTL to trigger ICMP time-exceeded replies and rebuilds the path hop by hop, handling timeouts and silent routers. Checked against the system traceroute on several hosts.</span><span class="muted">2025</span></li>
-        <li><span class="t">Roblox fighting game</span><span>A side project in Luau, with combat inspired by Shadow Fight.</span><span class="muted">In progress</span></li>
-      </ul>
-    </div>
-  </section>
-
-  <section class="section" id="experience">
-    <div class="wrap">
-      <div class="section-head"><h2>Experience</h2></div>
-      <ul class="xp">
-        <li>
-          <div class="when">Dec 2026 onwards</div>
-          <div><h3>Systems Reliability Engineering Intern <span>· Nutanix</span></h3><p>Summer internship. Starting December.</p></div>
-        </li>
-        <li>
-          <div class="when">Mar to May 2026</div>
-          <div><h3>Research and Data Analyst Intern <span>· Business Council for Sustainable Development Australia</span></h3><p>Analysed 30+ parliamentary and regulatory submissions, pulling structured positions out of long, unstructured documents. Rebuilt the team's briefing note templates and tracking documents so submissions were logged and checked the same way, and wrote plain summaries for senior non-technical stakeholders.</p></div>
-        </li>
-        <li>
-          <div class="when">Aug to Dec 2025</div>
-          <div><h3>Events Coordinator <span>· Business Information Systems Association, USyd</span></h3><p>Brought in industry sponsors through cold outreach and turned them into ongoing partnerships. Standardised the committee's event planning workflow and templates.</p></div>
-        </li>
-        <li>
-          <div class="when">Earlier</div>
-          <div><h3>Warehouse Operations Associate <span>· Amazon Australia</span></h3><p>Worked in a high-volume fulfilment operation that runs on rates, targets and live dashboards.</p></div>
-        </li>
-      </ul>
-    </div>
-  </section>
-
-  <section class="section" id="skills">
-    <div class="wrap">
-      <div class="section-head"><h2>What I work with</h2></div>
-      <div class="skills">
-        <div><h3>Languages</h3><p>Python, Java, SQL, R, JavaScript, Bash</p></div>
-        <div><h3>Data</h3><p>PostgreSQL, PostGIS, SQLite, pandas, NumPy, ETL pipelines, query optimisation, Jupyter</p></div>
-        <div><h3>Building and shipping</h3><p>Next.js, React, Node.js, Flask, Socket.io, REST APIs, WebSockets, Git, GitHub Actions, Vercel</p></div>
-      </div>
-    </div>
-  </section>
-
-  <section class="section" id="site">
-    <div class="wrap ops">
-      <div>
-        <div class="section-head" style="margin-bottom:24px"><h2>How this site is run</h2></div>
-        <p>I'm about to work in reliability, so I treat this site like a small service. It's static HTML served by Vercel's CDN, built from a GitHub repo. Every push goes through a pipeline that fails if the site gets slower or less accessible, and a scheduled job checks it's up.</p>
-        <ul class="checks">
-          <li>Lighthouse CI runs three times per push and checks the median against a budget</li>
-          <li>Broken links and invalid HTML fail the build</li>
-          <li>The 3D graph loads last, only on desktop, never with reduced motion or Save-Data on</li>
-          <li>An uptime check runs every 30 minutes and writes to a public log</li>
-        </ul>
-        <p style="margin-top:24px"><a class="link" href="status/">See the status page</a> &nbsp;·&nbsp; <a class="link" href="https://github.com/AbtaheeI/portfolio-site">Source</a></p>
-      </div>
-      <dl class="slo">
-        <div><dt>Availability target</dt><dd>99.5% over 30 days</dd></div>
-        <div><dt>Largest contentful paint</dt><dd>&lt; 2.5 s on mobile</dd></div>
-        <div><dt>JavaScript before the 3D</dt><dd>&lt; 4 KB</dd></div>
-        <div><dt>Lighthouse performance</dt><dd>≥ 90</dd></div>
-        <div><dt>Lighthouse accessibility</dt><dd>≥ 95</dd></div>
+  <div class="answers" id="answers">
+    <section class="answer" data-topic="me" aria-label="About me">
+      <p>I'm Abtahee, a penultimate-year Advanced Computing student at the University of Sydney, majoring in Business Information Systems and Data Science. I graduate in late 2027.</p>
+      <p>I like building the parts of software people don't see: the schema, the sync layer, the pipeline that has to run every day. In December I start as a Systems Reliability Engineering intern at Nutanix.</p>
+      <dl class="facts-row">
+        <div><dt>Based in</dt><dd>Sydney</dd></div>
+        <div><dt>Work rights</dt><dd>Full Australian</dd></div>
+        <div><dt>Graduating</dt><dd>Late 2027</dd></div>
+        <div><dt>Looking for</dt><dd>SWE, SRE, data engineering</dd></div>
       </dl>
-    </div>
-  </section>
+    </section>
 
-  <section class="contact" id="contact">
-    <div class="wrap">
-      <h2>If you're hiring for SWE, SRE or data engineering, I'd like to hear about it.</h2>
-      <p>Email is the quickest way to reach me. I'm in Sydney.</p>
-      <div class="contact-list">
-        <a href="mailto:abtaheeislam@gmail.com"><span class="k">Email</span><span class="v">abtaheeislam@gmail.com</span></a>
-        <a href="https://www.linkedin.com/in/abtahee-islam"><span class="k">LinkedIn</span><span class="v">in/abtahee-islam</span></a>
-        <a href="https://github.com/FromScratchToDataScientist"><span class="k">GitHub</span><span class="v">FromScratchToDataScientist</span></a>
-        <a href="CVA.pdf"><span class="k">Resume</span><span class="v">PDF, one page</span></a>
+    <section class="answer" data-topic="projects" aria-label="Projects">
+      <p>Here's what I've built. Each one has a write-up with the decisions I made and what I'd change.</p>
+      <div class="cards">
+        <a class="pcard" href="work/liveability-index.html">
+          <img src="assets/map-poster-640.webp" width="640" height="640" alt="" loading="lazy" decoding="async">
+          <span class="k">Data pipeline</span>
+          <span class="t">Greater Sydney Liveability Index</span>
+          <span class="d">PostgreSQL and PostGIS database fed by a live NSW Government API. Spatial joins score 66 SA2 regions.</span>
+          <span class="go">Read the write-up</span>
+        </a>
+        <a class="pcard" href="work/groupsync.html">
+          <span class="k">Real-time web app</span>
+          <span class="t">GroupSync</span>
+          <span class="d">Group chat for student projects. I built the Socket.io sync, the client-server contracts and the SQLite schema. An AI step turns "I'll do the slides" into an action item.</span>
+          <span class="stackline">Next.js · Node.js · Socket.io · SQLite</span>
+          <span class="go">Read the write-up</span>
+        </a>
+        <div class="pcard">
+          <span class="k">Networking</span>
+          <span class="t">Traceroute from scratch</span>
+          <span class="d">Bash. Sends probes with rising TTL to trigger ICMP time-exceeded replies and rebuilds the path hop by hop, handling timeouts and silent routers.</span>
+          <span class="stackline">Bash · ICMP</span>
+        </div>
+        <a class="pcard" href="work/aircraft-maintenance.html">
+          <span class="k">Data modelling</span>
+          <span class="t">Aircraft maintenance database</span>
+          <span class="d">Relational model and SQL reports for Western Sydney Airport, designed from a CASA-regulated brief.</span>
+          <span class="stackline">SQL · PostgreSQL</span>
+          <span class="go">Read the write-up</span>
+        </a>
+        <a class="pcard" href="work/nyc-housing.html">
+          <span class="k">Modelling</span>
+          <span class="t">NYC house price models</span>
+          <span class="d">R pipeline on 1,734 sales. Stepwise AIC regression against a random forest under k-fold cross-validation. R² 0.64.</span>
+          <span class="stackline">R · Quarto</span>
+          <span class="go">Read the write-up</span>
+        </a>
       </div>
-    </div>
-  </section>
+    </section>
+
+    <section class="answer" data-topic="skills" aria-label="Skills">
+      <p>These are what I've used on real projects.</p>
+      <div class="chips-group"><h3>Languages</h3><ul class="chips"><li>Python</li><li>Java</li><li>SQL</li><li>R</li><li>JavaScript</li><li>Bash</li></ul></div>
+      <div class="chips-group"><h3>Backend and real-time</h3><ul class="chips"><li>Node.js</li><li>Next.js</li><li>React</li><li>Flask</li><li>Socket.io</li><li>REST APIs</li><li>WebSockets</li></ul></div>
+      <div class="chips-group"><h3>Data</h3><ul class="chips"><li>PostgreSQL</li><li>PostGIS</li><li>SQLite</li><li>pandas</li><li>NumPy</li><li>ETL pipelines</li><li>Query optimisation</li></ul></div>
+      <div class="chips-group"><h3>Shipping</h3><ul class="chips"><li>Git</li><li>GitHub Actions</li><li>Vercel</li><li>Jira</li><li>Agile</li></ul></div>
+    </section>
+
+    <section class="answer" data-topic="experience" aria-label="Experience">
+      <ul class="xp-list">
+        <li><span class="when">Dec 2026</span><div><b>Systems Reliability Engineering Intern</b> · Nutanix<p>Summer internship, starting in December.</p></div></li>
+        <li><span class="when">Mar to May 2026</span><div><b>Research and Data Analyst Intern</b> · Business Council for Sustainable Development Australia<p>Analysed 30+ parliamentary and regulatory submissions, pulling structured positions out of long documents. Rebuilt the team's briefing note templates and tracking docs.</p></div></li>
+        <li><span class="when">Aug to Dec 2025</span><div><b>Events Coordinator</b> · Business Information Systems Association, USyd<p>Brought in industry sponsors through cold outreach and turned them into ongoing partnerships.</p></div></li>
+        <li><span class="when">Earlier</span><div><b>Warehouse Operations Associate</b> · Amazon Australia<p>Worked in a high-volume fulfilment operation that runs on rates, targets and live dashboards.</p></div></li>
+      </ul>
+    </section>
+
+    <section class="answer" data-topic="contact" aria-label="Contact">
+      <p>Email is the quickest way to reach me. I'm in Sydney and open to SWE, SRE and data engineering internships and graduate roles.</p>
+      <div class="contact-cards">
+        <a href="mailto:abtaheeislam@gmail.com"><span>Email</span>abtaheeislam@gmail.com</a>
+        <a href="https://www.linkedin.com/in/abtahee-islam"><span>LinkedIn</span>in/abtahee-islam</a>
+        <a href="https://github.com/FromScratchToDataScientist"><span>GitHub</span>FromScratchToDataScientist</a>
+        <a href="CVA.pdf"><span>Resume</span>PDF, one page</a>
+      </div>
+    </section>
+
+    <section class="answer" data-topic="site" aria-label="How this site is run">
+      <p>I'm about to work in reliability, so I run this site like a small service. Every push builds on GitHub Actions and fails if the site gets slower, less accessible, or has a broken link. Lighthouse runs three times and the median has to clear 90 for performance and 95 for accessibility.</p>
+      <p>A scheduled job checks the site every 30 minutes and logs the result. The dot on the "A" in the top corner is that check: green means the last one passed. <a class="link" href="status/">See the status page</a>.</p>
+    </section>
+  </div>
 </main>
 
-<footer class="foot">
+<footer class="foot home-foot">
   <div class="wrap">
     <span>Abtahee Islam · Sydney</span>
-    <span>Last updated <time id="build-date" datetime="2026-11-15">15 Nov 2026</time> · <a href="status/">status</a></span>
+    <span><button class="linkish" type="button" data-topic="site" data-q="How is this site run?">How this site is run</button> · <button class="linkish plain-toggle" id="plain-toggle" type="button" aria-pressed="false">Turn off 3D</button> · Updated <time id="build-date" datetime="2026-11-15">15 Nov 2026</time></span>
   </div>
 </footer>
 
-<script>
-(function () {
-  var root = document.documentElement;
-  var toggle = document.getElementById('plain-toggle');
-  var handle = null;
-
-  // ---------- status dot: reads the uptime log written by the scheduled check ----------
-  fetch('https://raw.githubusercontent.com/AbtaheeI/portfolio-site/status-data/uptime.json', { cache: 'no-store' }).then(function (r) { return r.ok ? r.json() : null; }).then(function (u) {
-    if (!u || !u.checks || !u.checks.length) return;
-    var last = u.checks[u.checks.length - 1];
-    var dot = document.getElementById('status-dot');
-    dot.dataset.state = last.ok ? 'ok' : 'bad';
-    dot.querySelector('span').textContent = last.ok ? 'up' : 'down';
-  }).catch(function () {});
-
-  // ---------- 3D graph: progressive enhancement ----------
-  var el = document.getElementById('graph');
-  function canRun3D() {
-    if (root.classList.contains('plain')) return false;
-    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return false;
-    if (navigator.connection && navigator.connection.saveData) return false;
-    if (innerWidth < 640) return false;
-    try { var c = document.createElement('canvas'); if (!(c.getContext('webgl2') || c.getContext('webgl'))) return false; } catch (_) { return false; }
-    return true;
-  }
-  function start() {
-    if (handle || !canRun3D()) return;
-    Promise.all([
-      import('./assets/graph3d.js'),
-      fetch('data/graph.json').then(function (r) { return r.json(); })
-    ]).then(function (res) {
-      if (handle || !canRun3D()) return;
-      handle = res[0].mount(el, res[1]);
-    }).catch(function () { /* poster stays */ });
-  }
-  function whenIdleAndVisible(fn) {
-    var io = new IntersectionObserver(function (es) {
-      if (!es[0].isIntersecting) return;
-      io.disconnect();
-      (window.requestIdleCallback || function (f) { setTimeout(f, 200); })(fn, { timeout: 2500 });
-    });
-    io.observe(el);
-  }
-  function setPlain(on) {
-    root.classList.toggle('plain', on);
-    toggle.setAttribute('aria-pressed', String(on));
-    try { localStorage.setItem('plain', on ? '1' : '0'); } catch (_) {}
-    if (on && handle) { handle.dispose(); handle = null; }
-    if (!on) start();
-  }
-  toggle.setAttribute('aria-pressed', String(root.classList.contains('plain')));
-  toggle.addEventListener('click', function () { setPlain(!root.classList.contains('plain')); });
-
-  if (document.readyState === 'complete') whenIdleAndVisible(start);
-  else addEventListener('load', function () { whenIdleAndVisible(start); });
-})();
-</script>
+<script src="assets/home.js" defer></script>
 </body>
 </html>

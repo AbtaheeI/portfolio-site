@@ -8,8 +8,8 @@ import {
   MeshLambertMaterial, Group, Raycaster, Vector2, Color, SRGBColorSpace
 } from 'three';
 
-const RAMP = [new Color('#1c2433'), new Color('#2f5f6a'), new Color('#5fd0c0')];
-const HOVER = new Color('#eef0f5');
+const RAMP = [new Color('#dde3ea'), new Color('#8fb3e6'), new Color('#3d7bf5')];
+const HOVER = new Color('#0f1115');
 
 function rampColor(t, out) {
   t = Math.min(1, Math.max(0, t));
@@ -83,7 +83,7 @@ export function mount(container, regions, opts = {}) {
   const scene = new Scene();
   const camera = new PerspectiveCamera(30, 1, 1, 2000);
 
-  scene.add(new HemisphereLight(0xdfe7ff, 0x0b0d14, 1.15));
+  scene.add(new HemisphereLight(0xffffff, 0x8a93a6, 1.25));
   const sun = new DirectionalLight(0xffffff, 1.6);
   sun.position.set(-40, 90, 50);
   scene.add(sun);
@@ -174,7 +174,7 @@ export function mount(container, regions, opts = {}) {
       const [a, b] = ranges[idx];
       const c = new Color();
       for (let i = a; i < b; i++) {
-        c.setRGB(baseColors[i * 3], baseColors[i * 3 + 1], baseColors[i * 3 + 2]).lerp(HOVER, 0.55);
+        c.setRGB(baseColors[i * 3], baseColors[i * 3 + 1], baseColors[i * 3 + 2]).lerp(HOVER, 0.35);
         arr[i * 3] = c.r; arr[i * 3 + 1] = c.g; arr[i * 3 + 2] = c.b;
       }
     }
