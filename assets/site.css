@@ -263,3 +263,21 @@ html.plain .map-wrap .poster{opacity:1!important}
   .nav-links .plain-toggle{display:none}
   .hero{padding-top:40px}
 }
+
+/* ---------- hero graph ---------- */
+.g-labels{position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .5s var(--ease)}
+.map-wrap.live .g-labels{opacity:1}
+.g-label{position:absolute;left:0;top:0;white-space:nowrap;font:400 12px/1 var(--mono);color:var(--text-3);margin:-6px 0 0 10px;transition:color .15s var(--ease),opacity .15s var(--ease)}
+.g-label.g-work{color:var(--text-2);font-size:13px}
+.g-label.g-me{color:var(--text);font:500 14px/1 var(--sans);margin:-7px 0 0 16px}
+.g-label.dim{opacity:.18!important}
+.g-label.hot{color:var(--text)}
+html.plain .g-labels{display:none}
+.hero .name{font-size:clamp(48px,7.2vw,88px);line-height:1;letter-spacing:-.03em;font-weight:500;color:var(--text)}
+.hero .role{margin-top:20px;font-size:clamp(20px,2vw,24px);line-height:1.35;color:var(--text);max-width:24ch;letter-spacing:-.01em}
+.map-wrap.graph{aspect-ratio:1/1}
+.map-block{margin-top:40px}
+.map-block .map-wrap{aspect-ratio:16/10;max-height:620px}
+@media (max-width:720px){.map-block .map-wrap{aspect-ratio:1/1}}
+.g-label.left{margin-left:-10px}
+.g-label.g-me{margin:-7px 0 0 16px!important}

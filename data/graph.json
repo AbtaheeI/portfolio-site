@@ -1,0 +1,26 @@
+{
+  "me": { "id": "me", "label": "Abtahee" },
+  "work": [
+    { "id": "nutanix", "label": "Nutanix SRE", "uses": [] },
+    { "id": "live", "label": "Liveability index", "href": "work/liveability-index.html", "uses": ["python", "sql", "postgres", "postgis"] },
+    { "id": "groupsync", "label": "GroupSync", "href": "work/groupsync.html", "uses": ["nextjs", "node", "socketio", "sqlite", "js"] },
+    { "id": "aircraft", "label": "Aircraft DB", "href": "work/aircraft-maintenance.html", "uses": ["sql", "postgres"] },
+    { "id": "traceroute", "label": "Traceroute", "uses": ["bash", "icmp"] },
+    { "id": "nyc", "label": "NYC price models", "href": "work/nyc-housing.html", "uses": ["r"] },
+    { "id": "bcsda", "label": "BCSDA research", "uses": [] }
+  ],
+  "tools": [
+    { "id": "python", "label": "Python" },
+    { "id": "sql", "label": "SQL" },
+    { "id": "postgres", "label": "PostgreSQL" },
+    { "id": "postgis", "label": "PostGIS" },
+    { "id": "nextjs", "label": "Next.js" },
+    { "id": "node", "label": "Node.js" },
+    { "id": "socketio", "label": "Socket.io" },
+    { "id": "sqlite", "label": "SQLite" },
+    { "id": "js", "label": "JavaScript" },
+    { "id": "bash", "label": "Bash" },
+    { "id": "icmp", "label": "ICMP" },
+    { "id": "r", "label": "R" }
+  ]
+}

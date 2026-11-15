@@ -1,0 +1,7 @@
+<!doctype html><html><head><link rel="stylesheet" href="../assets/site.css"><style>html,body{margin:0;background:#0b0d14}#m{position:relative;width:1200px;height:1200px;max-height:none!important;aspect-ratio:auto!important}.g-label{font-size:22px!important}.g-label.g-work{font-size:24px!important}.g-label.g-me{font-size:28px!important}</style></head>
+<body><div id="m" class="map-wrap graph"></div><script type="module">
+import { mount } from '../assets/graph3d.js';
+const d = await (await fetch('../data/graph.json')).json();
+mount(document.getElementById('m'), d, { instant: true });
+setTimeout(()=>document.title='ready', 900);
+</script></body></html>

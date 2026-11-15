@@ -4,10 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Abtahee Islam · Software, SRE and data engineering</title>
-<meta name="description" content="Abtahee (Bob) Islam. Advanced Computing student at the University of Sydney, incoming SRE intern at Nutanix. I build data systems: PostGIS pipelines, real-time apps, relational models.">
+<meta name="description" content="Abtahee Islam. Software engineering student at the University of Sydney and incoming SRE intern at Nutanix. Backends, real-time apps and data pipelines.">
 <meta name="theme-color" content="#0b0d14">
 <meta property="og:title" content="Abtahee Islam">
-<meta property="og:description" content="Student engineer in Sydney. Data systems now, reliability at Nutanix from December 2026.">
+<meta property="og:description" content="Software engineering student in Sydney. Backends, real-time apps and data pipelines. SRE intern at Nutanix from December 2026.">
 <meta property="og:image" content="https://abtaheeislam.com/assets/og.png">
 <meta property="og:url" content="https://abtaheeislam.com/">
 <meta name="twitter:card" content="summary_large_image">
@@ -21,7 +21,7 @@
   try { if (localStorage.getItem('plain') === '1') document.documentElement.classList.add('plain'); } catch (_) {}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"Person","name":"Abtahee Islam","alternateName":"Bob","url":"https://abtaheeislam.com","email":"mailto:abtaheeislam@gmail.com","affiliation":{"@type":"CollegeOrUniversity","name":"University of Sydney"},"address":{"@type":"PostalAddress","addressLocality":"Sydney","addressCountry":"AU"},"sameAs":["https://github.com/FromScratchToDataScientist","https://www.linkedin.com/in/abtahee-islam"]}
+{"@context":"https://schema.org","@type":"Person","name":"Abtahee Islam","url":"https://abtaheeislam.com","email":"mailto:abtaheeislam@gmail.com","affiliation":{"@type":"CollegeOrUniversity","name":"University of Sydney"},"address":{"@type":"PostalAddress","addressLocality":"Sydney","addressCountry":"AU"},"sameAs":["https://github.com/FromScratchToDataScientist","https://www.linkedin.com/in/abtahee-islam"]}
 </script>
 </head>
 <body>
@@ -38,7 +38,7 @@
       <a class="hide-sm" href="#experience">Experience</a>
       <a class="hide-sm" href="#site">This site</a>
       <a href="CVA.pdf">Resume</a>
-      <button class="plain-toggle" id="plain-toggle" type="button" aria-pressed="false" title="Turn off the 3D map and motion">plain view</button>
+      <button class="plain-toggle" id="plain-toggle" type="button" aria-pressed="false" title="Turn off the 3D and motion">plain view</button>
     </nav>
   </div>
 </header>
@@ -47,8 +47,9 @@
   <section class="hero">
     <div class="wrap hero-grid">
       <div>
-        <h1>I build data systems. In December I start keeping them running at Nutanix.</h1>
-        <p class="lede">I'm Bob, a penultimate-year Advanced Computing student at the University of Sydney, majoring in Business Information Systems and Data Science. Most of what I build turns messy public data into something you can query, map and trust.</p>
+        <h1 class="name">Abtahee Islam</h1>
+        <p class="role">I build backends, real-time apps and data pipelines.</p>
+        <p class="lede">I'm a penultimate-year Advanced Computing student at the University of Sydney. I like building the parts of software people don't see: the schema, the sync layer, the pipeline that has to run every day. In December I start as a Systems Reliability Engineering intern at Nutanix.</p>
         <div class="actions">
           <a class="btn btn-primary" href="CVA.pdf">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11"/><path d="m7 10 5 5 5-5"/><path d="M5 20h14"/></svg>
@@ -62,32 +63,10 @@
       </div>
 
       <div>
-        <div class="map-wrap" id="map">
-          <img class="poster" src="assets/map-poster-640.webp" srcset="assets/map-poster-640.webp 640w, assets/map-poster.webp 1200w" sizes="(max-width: 900px) 90vw, 600px" width="1200" height="1200" alt="3D map of 66 inner Sydney SA2 regions. Taller, brighter regions score higher on my liveability index." fetchpriority="low" decoding="async">
-          <div class="map-tip" id="map-tip" role="status" aria-live="polite"></div>
+        <div class="map-wrap graph" id="graph">
+          <img class="poster" src="assets/graph-poster-640.webp" srcset="assets/graph-poster-640.webp 640w, assets/graph-poster.webp 1200w" sizes="(max-width: 900px) 90vw, 600px" width="1200" height="1200" alt="A graph with me in the middle, connected to my projects and experience, each connected to the tools it used." fetchpriority="low" decoding="async">
         </div>
-        <div class="map-cap">
-          <span>Inner Sydney liveability, 66 SA2 regions. Height is the composite score from my PostGIS pipeline. Hover or drag.</span>
-          <span class="legend" aria-hidden="true">low <i></i> high</span>
-        </div>
-        <details class="regions" id="regions">
-          <summary>Highest and lowest five regions</summary>
-          <table class="region-table">
-            <thead><tr><th>Region</th><th>Area</th><th>Score</th></tr></thead>
-            <tbody id="region-rows">
-              <tr><td>Sydney (North) - Millers Point</td><td>City and Inner South</td><td>1.000</td></tr>
-              <tr><td>Banksmeadow</td><td>City and Inner South</td><td>1.000</td></tr>
-              <tr><td>Rose Bay - Vaucluse - Watsons Bay</td><td>Eastern Suburbs</td><td>0.984</td></tr>
-              <tr><td>Five Dock - Abbotsford</td><td>Inner West</td><td>0.963</td></tr>
-              <tr><td>Malabar - La Perouse</td><td>Eastern Suburbs</td><td>0.961</td></tr>
-              <tr><td>Ultimo</td><td>City and Inner South</td><td>0.081</td></tr>
-              <tr><td>South Coogee</td><td>Eastern Suburbs</td><td>0.078</td></tr>
-              <tr><td>Rhodes</td><td>Inner West</td><td>0.073</td></tr>
-              <tr><td>Pyrmont</td><td>City and Inner South</td><td>0.072</td></tr>
-              <tr><td>Zetland</td><td>City and Inner South</td><td>0.051</td></tr>
-            </tbody>
-          </table>
-        </details>
+        <p class="map-cap"><span>Me, what I've built, and what I built it with. Hover a project to see its stack, click to read about it, drag to turn.</span></p>
       </div>
     </div>
   </section>
@@ -113,7 +92,7 @@
           <div>
             <div class="kicker">Spatial data pipeline</div>
             <h3>Greater Sydney Liveability Index</h3>
-            <p>A PostgreSQL and PostGIS database that pulls live NSW Government data, maps every transport stop, school, business and point of interest to its SA2 region with spatial joins, and scores each region with a composite of four z-scores. The map at the top of this page is its output.</p>
+            <p>A PostgreSQL and PostGIS database that pulls live NSW Government data, maps every transport stop, school, business and point of interest to its SA2 region with spatial joins, and scores each region with a composite of four z-scores. The write-up has the 3D map it produces.</p>
             <ul class="stack"><li>PostgreSQL</li><li>PostGIS</li><li>Python</li><li>NSW Gov API</li><li>GiST indexes</li><li>Plotly</li></ul>
             <div class="work-links">
               <a href="work/liveability-index.html">Read the write-up <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></a>
@@ -213,7 +192,7 @@
         <ul class="checks">
           <li>Lighthouse CI runs three times per push and checks the median against a budget</li>
           <li>Broken links and invalid HTML fail the build</li>
-          <li>The 3D map loads last, only on desktop, never with reduced motion or Save-Data on</li>
+          <li>The 3D graph loads last, only on desktop, never with reduced motion or Save-Data on</li>
           <li>An uptime check runs every 30 minutes and writes to a public log</li>
         </ul>
         <p style="margin-top:24px"><a class="link" href="status/">See the status page</a> &nbsp;·&nbsp; <a class="link" href="https://github.com/AbtaheeI/portfolio-site">Source</a></p>
@@ -221,7 +200,7 @@
       <dl class="slo">
         <div><dt>Availability target</dt><dd>99.5% over 30 days</dd></div>
         <div><dt>Largest contentful paint</dt><dd>&lt; 2.5 s on mobile</dd></div>
-        <div><dt>JavaScript before the map</dt><dd>&lt; 4 KB</dd></div>
+        <div><dt>JavaScript before the 3D</dt><dd>&lt; 4 KB</dd></div>
         <div><dt>Lighthouse performance</dt><dd>≥ 90</dd></div>
         <div><dt>Lighthouse accessibility</dt><dd>≥ 95</dd></div>
       </dl>
@@ -253,9 +232,7 @@
 (function () {
   var root = document.documentElement;
   var toggle = document.getElementById('plain-toggle');
-  var mapEl = document.getElementById('map');
-  var tip = document.getElementById('map-tip');
-  var handle = null, data = null;
+  var handle = null;
 
   // ---------- status dot: reads the uptime log written by the scheduled check ----------
   fetch('https://raw.githubusercontent.com/AbtaheeI/portfolio-site/status-data/uptime.json', { cache: 'no-store' }).then(function (r) { return r.ok ? r.json() : null; }).then(function (u) {
@@ -266,7 +243,8 @@
     dot.querySelector('span').textContent = last.ok ? 'up' : 'down';
   }).catch(function () {});
 
-  // ---------- 3D map: progressive enhancement ----------
+  // ---------- 3D graph: progressive enhancement ----------
+  var el = document.getElementById('graph');
   function canRun3D() {
     if (root.classList.contains('plain')) return false;
     if (matchMedia('(prefers-reduced-motion: reduce)').matches) return false;
@@ -275,40 +253,24 @@
     try { var c = document.createElement('canvas'); if (!(c.getContext('webgl2') || c.getContext('webgl'))) return false; } catch (_) { return false; }
     return true;
   }
-
-  function fmt(n) { return n.toLocaleString('en-AU'); }
-  function showTip(i) {
-    if (i < 0 || !data) return;
-    var r = data[i];
-    tip.innerHTML = '<b>' + r.n + '</b><div class="muted" style="margin-bottom:6px">' + r.a + '</div>' +
-      '<div class="row"><span>score</span><span>' + r.s.toFixed(3) + '</span></div>' +
-      '<div class="row"><span>rank</span><span>' + (i + 1) + ' of ' + data.length + '</span></div>' +
-      '<div class="row"><span>transport stops</span><span>' + fmt(r.st) + '</span></div>' +
-      '<div class="row"><span>points of interest</span><span>' + fmt(r.poi) + '</span></div>' +
-      '<div class="row"><span>residents</span><span>' + fmt(r.pop) + '</span></div>';
-  }
-
   function start() {
     if (handle || !canRun3D()) return;
     Promise.all([
-      import('./assets/map3d.js'),
-      fetch('data/sa2.json').then(function (r) { return r.json(); })
+      import('./assets/graph3d.js'),
+      fetch('data/graph.json').then(function (r) { return r.json(); })
     ]).then(function (res) {
       if (handle || !canRun3D()) return;
-      data = res[1];
-      handle = res[0].mount(mapEl, data, { tooltip: tip, onHover: showTip });
-    }).catch(function () { /* poster stays, nothing lost */ });
+      handle = res[0].mount(el, res[1]);
+    }).catch(function () { /* poster stays */ });
   }
-
   function whenIdleAndVisible(fn) {
     var io = new IntersectionObserver(function (es) {
       if (!es[0].isIntersecting) return;
       io.disconnect();
       (window.requestIdleCallback || function (f) { setTimeout(f, 200); })(fn, { timeout: 2500 });
     });
-    io.observe(mapEl);
+    io.observe(el);
   }
-
   function setPlain(on) {
     root.classList.toggle('plain', on);
     toggle.setAttribute('aria-pressed', String(on));
@@ -316,7 +278,6 @@
     if (on && handle) { handle.dispose(); handle = null; }
     if (!on) start();
   }
-
   toggle.setAttribute('aria-pressed', String(root.classList.contains('plain')));
   toggle.addEventListener('click', function () { setPlain(!root.classList.contains('plain')); });
 

@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build:map": "esbuild src/map3d.js --bundle --minify --format=esm --target=es2020 --outfile=assets/map3d.js",
+    "build:map": "rm -f assets/chunk-*.js && esbuild src/map3d.js src/graph3d.js --bundle --minify --format=esm --target=es2020 --outdir=assets --splitting --chunk-names=chunk-[hash]",
     "build": "npm run build:map && sh scripts/build.sh",
     "check:html": "html-validate \"_site/**/*.html\"",
     "check:links": "linkinator _site --recurse --skip \"^https?://(?!localhost)\"",
