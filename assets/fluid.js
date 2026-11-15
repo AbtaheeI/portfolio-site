@@ -14,8 +14,8 @@
   if (!gl || !gl.getExtension('EXT_color_buffer_float')) return;
   document.body.prepend(canvas);
 
-  var SIM = 128, DYE = 720, PRESSURE_ITERS = 20, CURL = 30, SPLAT_R = 0.0022, FORCE = 4800;
-  var VEL_FADE = 0.991, DYE_FADE = 0.9945, IDLE_MS = 14000;
+  var SIM = 128, DYE = 720, PRESSURE_ITERS = 20, CURL = 3, SPLAT_R = 0.0022, FORCE = 3000;
+  var VEL_FADE = 0.965, DYE_FADE = 0.9925, IDLE_MS = 14000;
 
   // ---------- shaders ----------
   var VERT = '#version 300 es\nin vec2 p;out vec2 uv;out vec2 l;out vec2 r;out vec2 t;out vec2 b;uniform vec2 texel;' +
@@ -97,7 +97,7 @@
   var PALETTE = [[1, .1, .35], [.75, .15, 1], [.2, .15, 1], [0, .55, 1], [.1, .9, .45], [1, .6, 0]];
   var hue = Math.random() * PALETTE.length;
   function colour() {
-    hue = (hue + 0.03) % PALETTE.length;
+    hue = (hue + 0.012) % PALETTE.length;
     var i = Math.floor(hue), f = hue - i, a = PALETTE[i], b = PALETTE[(i + 1) % PALETTE.length];
     return [a[0] + (b[0] - a[0]) * f, a[1] + (b[1] - a[1]) * f, a[2] + (b[2] - a[2]) * f];
   }
@@ -107,7 +107,7 @@
     bind(0, vel.read, u.tex); gl.uniform1f(u.aspect, aspect); gl.uniform2f(u.point, x, y);
     gl.uniform3f(u.color, dx, dy, 0); gl.uniform1f(u.radius, SPLAT_R * (c[3] > 1 ? 2.2 : 1) * (aspect > 1 ? aspect : 1));
     draw(vel.write); vel.swap();
-    bind(0, dye.read, u.tex); gl.uniform3f(u.color, c[0] * (c[3] || .17), c[1] * (c[3] || .17), c[2] * (c[3] || .17));
+    bind(0, dye.read, u.tex); gl.uniform3f(u.color, c[0] * (c[3] || .06), c[1] * (c[3] || .06), c[2] * (c[3] || .06));
     draw(dye.write); dye.swap();
   }
 
@@ -159,8 +159,8 @@
   addEventListener('pointerdown', function (e) {
     if (e.pointerType && e.pointerType !== 'mouse') return;
     if (document.body.classList.contains('chat') || (e.target.closest && e.target.closest('a,button,input,textarea'))) return;
-    var c = colour(); c[3] = 5;
-    var a = Math.random() * 6.283, f = FORCE * 0.02;
+    var c = colour(); c[3] = 1.5;
+    var a = Math.random() * 6.283, f = FORCE * 0.006;
     queue.push([e.clientX / innerWidth, 1 - e.clientY / innerHeight, Math.cos(a) * f, Math.sin(a) * f, c]);
     wake();
   }, { passive: true });
