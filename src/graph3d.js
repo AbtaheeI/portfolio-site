@@ -9,11 +9,11 @@ import {
 } from 'three';
 
 const C = {
-  me: new Color('#3d7bf5'),
+  me: new Color('#0071e3'),
   work: new Color('#0f1115'),
   tool: new Color('#a3a8b5'),
   edge: new Color('#d9dce2'),
-  edgeHot: new Color('#3d7bf5'),
+  edgeHot: new Color('#0071e3'),
   dim: new Color('#eef0f3')
 };
 

@@ -35,7 +35,10 @@
   function topicNode(topic) {
     var src = document.querySelector('.answers [data-topic="' + topic + '"]');
     var wrap = el('div', 'answer');
-    wrap.appendChild(el('h2', 'topic-title', TITLES[topic]));
+    var head = el('div', 'bot-head');
+    var face = document.createElement('img'); face.src = 'assets/memoji-256.webp'; face.alt = ''; face.width = 32; face.height = 36;
+    head.appendChild(face); head.appendChild(el('h2', 'topic-title', TITLES[topic]));
+    wrap.appendChild(head);
     if (src) Array.prototype.forEach.call(src.childNodes, function (n) { wrap.appendChild(n.cloneNode(true)); });
     return wrap;
   }
@@ -98,32 +101,4 @@
   var h = location.hash.slice(1);
   if (TITLES[h]) { var b = document.querySelector('[data-topic="' + h + '"][data-q]'); if (b) ask(b.dataset.q, h); }
 
-  // ---------- 3D graph, desktop only ----------
-  var stage = document.getElementById('graph'), toggle = document.getElementById('plain-toggle'), handle = null;
-  function canRun3D() {
-    if (root.classList.contains('plain') || body.classList.contains('chat')) return false;
-    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return false;
-    if (navigator.connection && navigator.connection.saveData) return false;
-    if (innerWidth < 640) return false;
-    try { var c = document.createElement('canvas'); if (!(c.getContext('webgl2') || c.getContext('webgl'))) return false; } catch (_) { return false; }
-    return true;
-  }
-  function start() {
-    if (handle || !canRun3D()) return;
-    Promise.all([import('./graph3d.js'), fetch('data/graph.json').then(function (r) { return r.json(); })])
-      .then(function (res) { if (!handle && canRun3D()) handle = res[0].mount(stage, res[1], { compact: true }); })
-      .catch(function () {});
-  }
-  function setPlain(on) {
-    root.classList.toggle('plain', on);
-    toggle.setAttribute('aria-pressed', String(on));
-    toggle.textContent = on ? 'Turn on 3D' : 'Turn off 3D';
-    try { localStorage.setItem('plain', on ? '1' : '0'); } catch (_) {}
-    if (on && handle) { handle.dispose(); handle = null; }
-    if (!on) start();
-  }
-  setPlain(root.classList.contains('plain'));
-  toggle.addEventListener('click', function () { setPlain(!root.classList.contains('plain')); });
-  function idle(fn) { (window.requestIdleCallback || function (f) { setTimeout(f, 200); })(fn, { timeout: 2500 }); }
-  if (document.readyState === 'complete') idle(start); else addEventListener('load', function () { idle(start); });
 })();

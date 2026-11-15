@@ -8,7 +8,7 @@ import {
   MeshLambertMaterial, Group, Raycaster, Vector2, Color, SRGBColorSpace
 } from 'three';
 
-const RAMP = [new Color('#dde3ea'), new Color('#8fb3e6'), new Color('#3d7bf5')];
+const RAMP = [new Color('#e3e8ef'), new Color('#8ab6ef'), new Color('#0071e3')];
 const HOVER = new Color('#0f1115');
 
 function rampColor(t, out) {
