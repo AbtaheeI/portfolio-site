@@ -37,7 +37,7 @@
       <div><dt>Type</dt><dd>Data pipeline, university project</dd></div>
       <div><dt>Stack</dt><dd>PostgreSQL, PostGIS, Python, Plotly</dd></div>
       <div><dt>Coverage</dt><dd>66 SA2 regions, 905,345 residents</dd></div>
-      <div><dt>Links</dt><dd><a class="link" href="../liveability_map.html">Interactive map</a></dd></div>
+      <div><dt>Links</dt><dd><a class="link" href="../liveability-report.pdf">Full report (PDF)</a> · <a class="link" href="../liveability_map.html">Map</a></dd></div>
     </dl>
 
     <div class="prose">
@@ -93,7 +93,7 @@
       <p>The GiST index is what makes the join usable. Without it PostGIS has to test every stop against every polygon. With it, it checks bounding boxes first and only runs the exact containment test on the few polygons that could match.</p>
 
       <h2>Turning four numbers into one</h2>
-      <p>Each region ends up with four inputs: business density, transport stops, schools relative to young residents, and points of interest. They're on completely different scales, so I converted each to a z-score, added the four together, and passed the sum through a logistic function to land between 0 and 1.</p>
+      <p>Each region ends up with four inputs: businesses per 1,000 residents in three industries (information and telecoms, transport and warehousing, manufacturing), the number of transport stops, school catchments per 1,000 young residents, and the number of points of interest. They're on completely different scales, so I converted each to a z-score, added the four together, and passed the sum through a logistic function to land between 0 and 1.</p>
       <p><code>score = 1 / (1 + e<sup>-(z_business + z_stops + z_schools + z_poi)</sup>)</code></p>
       <p>Equal weights was a deliberate choice. I had no defensible reason to say transport matters twice as much as schools, so I didn't pretend to.</p>
 
@@ -102,6 +102,7 @@
         <li>Top: Millers Point, Banksmeadow, and Rose Bay - Vaucluse - Watsons Bay</li>
         <li>Bottom: Zetland, Pyrmont and Rhodes</li>
         <li>The median region scores 0.38, and 8 of 66 score above 0.9</li>
+        <li>The Inner West is the most even, with the highest median (0.50) and the tightest spread. City and Inner South and the Eastern Suburbs are mostly low with a few extreme highs</li>
       </ul>
 
       <h2>What I'd change</h2>

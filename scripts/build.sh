@@ -5,7 +5,7 @@ rm -rf _site
 mkdir -p _site
 cp -R index.html 404.html robots.txt sitemap.xml assets data work status _site/
 # Files that already live in the repo from earlier versions of the site
-for f in CVA.pdf liveability_map.html House-Price-Prediction-NYC-; do
+for f in CVA.pdf liveability_map.html liveability-report.pdf House-Price-Prediction-NYC-; do
   [ -e "$f" ] && cp -R "$f" _site/ || echo "note: $f not found, skipping"
 done
 # Stamp the build date into the footer
