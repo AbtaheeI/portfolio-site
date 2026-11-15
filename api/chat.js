@@ -99,28 +99,31 @@ export default async function handler(req, res) {
   const q = typeof body.q === 'string' ? body.q.replace(/[\u0000-\u001f\u007f]/g, ' ').trim().slice(0, MAX_Q) : '';
   if (q.length < 2) return deny(res, 400, 'Ask a question first.');
 
-  try {
-    const r = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: { 'x-api-key': key, 'anthropic-version': '2023-06-01', 'content-type': 'application/json' },
-      body: JSON.stringify({
-        model: 'claude-haiku-5-5',
-        max_tokens: MAX_TOKENS,
-        system: SYSTEM,
-        messages: [{ role: 'user', content: q }]
-      }),
-      signal: AbortSignal.timeout(12000)
-    });
-    // Never pass upstream error bodies to the browser: they can include account details.
-    if (!r.ok) { console.error('anthropic status', r.status); return deny(res, 502, 'unavailable'); }
-    const j = await r.json();
-    const answer = (j.content || []).filter(b => b.type === 'text').map(b => b.text).join('\n\n')
-      .replace(/\s*[\u2014\u2013]\s*/g, ', ').trim().slice(0, 1500);
-    if (!answer) return deny(res, 502, 'unavailable');
-    res.setHeader('Cache-Control', 'no-store');
-    return res.status(200).json({ answer });
-  } catch (e) {
-    console.error('chat error', e && e.name);
-    return deny(res, 504, 'unavailable');
+  // One retry for brief upstream trouble (rate limit, overload, empty reply). Never more than two calls.
+  const payload = JSON.stringify({ model: 'claude-haiku-5-5', max_tokens: MAX_TOKENS, system: SYSTEM, messages: [{ role: 'user', content: q }] });
+  for (let attempt = 1; attempt <= 2; attempt++) {
+    try {
+      const r = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: { 'x-api-key': key, 'anthropic-version': '2023-06-01', 'content-type': 'application/json' },
+        body: payload,
+        signal: AbortSignal.timeout(6000)
+      });
+      // Never pass upstream error bodies to the browser: they can include account details.
+      if (!r.ok) {
+        console.error('anthropic status', r.status, 'attempt', attempt);
+        if (r.status === 401 || r.status === 403 || r.status === 400) break; // bad key or request: retrying won't help
+      } else {
+        const j = await r.json();
+        const answer = (j.content || []).filter(b => b.type === 'text').map(b => b.text).join('\n\n')
+          .replace(/\s*[\u2014\u2013]\s*/g, ', ').trim().slice(0, 1500);
+        if (answer) { res.setHeader('Cache-Control', 'no-store'); return res.status(200).json({ answer }); }
+        console.error('anthropic empty reply', j.stop_reason, 'attempt', attempt);
+      }
+    } catch (e) {
+      console.error('chat error', e && e.name, 'attempt', attempt);
+    }
+    if (attempt === 1) await new Promise(ok => setTimeout(ok, 500));
   }
+  return deny(res, 502, 'unavailable');
 }
