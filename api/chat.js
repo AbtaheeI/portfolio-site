@@ -58,6 +58,17 @@ const MAX_TOKENS = 200;       // tokens out
 const PER_IP_PER_HOUR = 10;
 const PER_INSTANCE_PER_DAY = 300;
 
+const OFF_TOPIC = "This box is only for questions about me and my work. Try asking about my projects, my skills, my experience, or how to reach me.";
+const JUNK = [
+  /\b(ignore|disregard|forget)\b.{0,30}\b(previous|above|prior|earlier|your|all)\b.{0,20}\b(instructions?|prompts?|rules)\b/i,
+  /\b(system prompt|api[ _-]?key|jailbreak|developer mode|dan mode)\b/i,
+  /^\s*(please\s+)?(write|generate|create|make|give|compose|draft)\b.{0,25}\b(code|script|program|function|essay|poem|story|song|joke|email|letter|article|blog|recipe)\b/i,
+  /\b(my|this|the) (homework|assignment|exam|quiz)\b/i,
+  /\b(translate|summari[sz]e|proofread|rewrite)\b.{0,20}\b(this|the following|for me)\b/i,
+  /https?:\/\//i,
+  /^[^a-zA-Z]*$/
+];
+
 const hits = new Map();
 let dayKey = '', dayCount = 0;
 
@@ -98,6 +109,12 @@ export default async function handler(req, res) {
   const body = req.body && typeof req.body === 'object' ? req.body : {};
   const q = typeof body.q === 'string' ? body.q.replace(/[\u0000-\u001f\u007f]/g, ' ').trim().slice(0, MAX_Q) : '';
   if (q.length < 2) return deny(res, 400, 'Ask a question first.');
+
+  // Obvious off-topic or abusive input gets a fixed reply and never reaches the API, so it costs nothing.
+  if (JUNK.some(re => re.test(q))) {
+    res.setHeader('Cache-Control', 'no-store');
+    return res.status(200).json({ answer: OFF_TOPIC });
+  }
 
   // One retry for brief upstream trouble (rate limit, overload, empty reply). Never more than two calls.
   const payload = JSON.stringify({ model: 'claude-haiku-5-5', max_tokens: MAX_TOKENS, system: SYSTEM, messages: [{ role: 'user', content: q }] });
