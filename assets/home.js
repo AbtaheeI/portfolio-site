@@ -42,8 +42,17 @@
     if (src) Array.prototype.forEach.call(src.childNodes, function (n) { wrap.appendChild(n.cloneNode(true)); });
     return wrap;
   }
-  function startChat() {
-    if (!body.classList.contains('chat')) { body.classList.add('chat'); window.scrollTo(0, 0); }
+  // Entering the chat adds one history entry, so the browser Back button returns to the start.
+  function startChat(tag) {
+    if (!body.classList.contains('chat')) {
+      body.classList.add('chat'); window.scrollTo(0, 0);
+      history.pushState({ chat: 1 }, '', '#' + (tag || 'chat'));
+    } else {
+      history.replaceState(history.state || { chat: 1 }, '', '#' + (tag || 'chat'));
+    }
+  }
+  function goHome() {
+    body.classList.remove('chat'); thread.replaceChildren(); input.value = ''; window.scrollTo(0, 0);
   }
   function addUser(q) { var m = el('div', 'msg user'); m.appendChild(el('span', null, q)); thread.appendChild(m); }
   function addBot() { var m = el('div', 'msg bot'); m.appendChild(el('p', 'wait', 'Looking that up')); thread.appendChild(m); scrollDown(); return m; }
@@ -65,7 +74,7 @@
   function ask(q, topic) {
     q = (q || '').trim();
     if (!q) return;
-    startChat();
+    startChat(topic);
     addUser(q);
     var bot = addBot();
 
@@ -93,12 +102,14 @@
   document.querySelectorAll('[data-topic][data-q]').forEach(function (b) {
     b.addEventListener('click', function () { ask(b.dataset.q, b.dataset.topic); });
   });
-  document.getElementById('home-btn').addEventListener('click', function () {
-    body.classList.remove('chat'); thread.replaceChildren(); history.replaceState(null, '', location.pathname); window.scrollTo(0, 0);
-  });
+  // Three ways back: the Home button, the browser Back button, and Escape.
+  function leave() { if (!body.classList.contains('chat')) return; if (history.state && history.state.chat && !history.state.deep) history.back(); else { history.replaceState(null, '', location.pathname); goHome(); } }
+  document.getElementById('home-btn').addEventListener('click', leave);
+  addEventListener('popstate', function () { if (!location.hash) goHome(); });
+  addEventListener('keydown', function (e) { if (e.key === 'Escape') leave(); });
 
   // Deep links, for example abtaheeislam.com/#projects from a resume
   var h = location.hash.slice(1);
-  if (TITLES[h]) { var b = document.querySelector('[data-topic="' + h + '"][data-q]'); if (b) ask(b.dataset.q, h); }
+  if (TITLES[h]) { var b = document.querySelector('[data-topic="' + h + '"][data-q]'); if (b) { body.classList.add('chat'); history.replaceState({ chat: 1, deep: 1 }, '', '#' + h); ask(b.dataset.q, h); } }
 
 })();

@@ -127,3 +127,11 @@ a.pcard:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(0,0,0,.08)}
 .ink{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
 body.chat .ink{display:none}
 .topbar,.home-foot{z-index:30}
+
+/* In the chat, the "A" becomes a labelled Home button so the way back is obvious */
+.mark{width:auto;min-width:44px;padding:0 13px;gap:2px;display:inline-flex;align-items:center;justify-content:center}
+.mark-back{display:none;align-items:center;gap:2px;font:500 15px/1 var(--sans);letter-spacing:-.01em}
+.mark-back svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;margin-left:-5px}
+body.chat .mark-a{display:none}
+body.chat .mark-back{display:inline-flex}
+body.chat .mark{border-radius:999px;padding:0 16px 0 12px}

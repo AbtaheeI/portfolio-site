@@ -14,8 +14,8 @@
   if (!gl || !gl.getExtension('EXT_color_buffer_float')) return;
   document.body.prepend(canvas);
 
-  var SIM = 128, DYE = 720, PRESSURE_ITERS = 14, CURL = 26, SPLAT_R = 0.0022, FORCE = 3600;
-  var VEL_FADE = 0.985, DYE_FADE = 0.972, IDLE_MS = 6000;
+  var SIM = 128, DYE = 720, PRESSURE_ITERS = 20, CURL = 30, SPLAT_R = 0.0022, FORCE = 4800;
+  var VEL_FADE = 0.991, DYE_FADE = 0.9945, IDLE_MS = 14000;
 
   // ---------- shaders ----------
   var VERT = '#version 300 es\nin vec2 p;out vec2 uv;out vec2 l;out vec2 r;out vec2 t;out vec2 b;uniform vec2 texel;' +
@@ -107,7 +107,7 @@
     bind(0, vel.read, u.tex); gl.uniform1f(u.aspect, aspect); gl.uniform2f(u.point, x, y);
     gl.uniform3f(u.color, dx, dy, 0); gl.uniform1f(u.radius, SPLAT_R * (c[3] > 1 ? 2.2 : 1) * (aspect > 1 ? aspect : 1));
     draw(vel.write); vel.swap();
-    bind(0, dye.read, u.tex); gl.uniform3f(u.color, c[0] * (c[3] || .32), c[1] * (c[3] || .32), c[2] * (c[3] || .32));
+    bind(0, dye.read, u.tex); gl.uniform3f(u.color, c[0] * (c[3] || .17), c[1] * (c[3] || .17), c[2] * (c[3] || .17));
     draw(dye.write); dye.swap();
   }
 
@@ -119,8 +119,8 @@
     u = use(P.pres, vel); bind(1, divT, u.div);
     for (var i = 0; i < PRESSURE_ITERS; i++) { bind(0, pres.read, u.pres); draw(pres.write); pres.swap(); }
     u = use(P.grad, vel); bind(0, pres.read, u.pres); bind(1, vel.read, u.vel); draw(vel.write); vel.swap();
-    u = use(P.advect, vel); bind(0, vel.read, u.vel); bind(1, vel.read, u.src); gl.uniform1f(u.dt, dt); gl.uniform1f(u.fade, VEL_FADE); draw(vel.write); vel.swap();
-    u = use(P.advect, vel); bind(0, vel.read, u.vel); bind(1, dye.read, u.src); gl.uniform1f(u.dt, dt); gl.uniform1f(u.fade, DYE_FADE); draw(dye.write); dye.swap();
+    u = use(P.advect, vel); bind(0, vel.read, u.vel); bind(1, vel.read, u.src); gl.uniform1f(u.dt, dt); gl.uniform1f(u.fade, Math.pow(VEL_FADE, dt * 60)); draw(vel.write); vel.swap();
+    u = use(P.advect, vel); bind(0, vel.read, u.vel); bind(1, dye.read, u.src); gl.uniform1f(u.dt, dt); gl.uniform1f(u.fade, Math.pow(DYE_FADE, dt * 60)); draw(dye.write); dye.swap();
   }
 
   function show() {
@@ -146,6 +146,7 @@
 
   addEventListener('pointermove', function (e) {
     if (e.pointerType && e.pointerType !== 'mouse') return;
+    if (document.body.classList.contains('chat')) { px = -1; return; }
     var x = e.clientX / innerWidth, y = 1 - e.clientY / innerHeight;
     if (px >= 0) {
       var dx = (x - px) * (aspect > 1 ? aspect : 1), dy = (y - py) / (aspect < 1 ? aspect : 1);
@@ -157,7 +158,8 @@
   // A click drops a bigger burst of ink
   addEventListener('pointerdown', function (e) {
     if (e.pointerType && e.pointerType !== 'mouse') return;
-    var c = colour(); c[3] = 7;
+    if (document.body.classList.contains('chat') || (e.target.closest && e.target.closest('a,button,input,textarea'))) return;
+    var c = colour(); c[3] = 5;
     var a = Math.random() * 6.283, f = FORCE * 0.02;
     queue.push([e.clientX / innerWidth, 1 - e.clientY / innerHeight, Math.cos(a) * f, Math.sin(a) * f, c]);
     wake();
