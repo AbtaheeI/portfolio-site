@@ -15,7 +15,7 @@
   document.body.prepend(canvas);
 
   var SIM = 128, DYE = 720, PRESSURE_ITERS = 14, CURL = 26, SPLAT_R = 0.0022, FORCE = 3600;
-  var VEL_FADE = 0.985, DYE_FADE = 0.962, IDLE_MS = 6000;
+  var VEL_FADE = 0.985, DYE_FADE = 0.972, IDLE_MS = 6000;
 
   // ---------- shaders ----------
   var VERT = '#version 300 es\nin vec2 p;out vec2 uv;out vec2 l;out vec2 r;out vec2 t;out vec2 b;uniform vec2 texel;' +
@@ -35,7 +35,7 @@
     pres: H + 'uniform sampler2D pres;uniform sampler2D div;void main(){o=vec4((texture(pres,l).x+texture(pres,r).x+texture(pres,t).x+texture(pres,b).x-texture(div,uv).x)*.25,0.,0.,1.);}',
     grad: H + 'uniform sampler2D pres;uniform sampler2D vel;void main(){o=vec4(texture(vel,uv).xy-vec2(texture(pres,r).x-texture(pres,l).x,texture(pres,t).x-texture(pres,b).x),0.,1.);}',
     // Soft pastel on a white page: alpha follows the ink density, colour is premultiplied.
-    show: H + 'uniform sampler2D tex;void main(){vec3 c=texture(tex,uv).rgb;float m=max(c.r,max(c.g,c.b));if(m>1.)c/=m;float a=clamp(m,0.,1.)*.9;o=vec4(c*.9,a);}'
+    show: H + 'uniform sampler2D tex;void main(){vec3 c=texture(tex,uv).rgb;float m=max(c.r,max(c.g,c.b));if(m>1.)c/=m;float a=clamp(m,0.,1.);o=vec4(c,a);}'
   };
 
   function compile(type, src) { var s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s); return s; }
@@ -105,9 +105,9 @@
   function splat(x, y, dx, dy, c) {
     var u = use(P.splat, vel);
     bind(0, vel.read, u.tex); gl.uniform1f(u.aspect, aspect); gl.uniform2f(u.point, x, y);
-    gl.uniform3f(u.color, dx, dy, 0); gl.uniform1f(u.radius, SPLAT_R * (aspect > 1 ? aspect : 1));
+    gl.uniform3f(u.color, dx, dy, 0); gl.uniform1f(u.radius, SPLAT_R * (c[3] > 1 ? 2.2 : 1) * (aspect > 1 ? aspect : 1));
     draw(vel.write); vel.swap();
-    bind(0, dye.read, u.tex); gl.uniform3f(u.color, c[0] * (c[3] || .24), c[1] * (c[3] || .24), c[2] * (c[3] || .24));
+    bind(0, dye.read, u.tex); gl.uniform3f(u.color, c[0] * (c[3] || .32), c[1] * (c[3] || .32), c[2] * (c[3] || .32));
     draw(dye.write); dye.swap();
   }
 
@@ -157,8 +157,8 @@
   // A click drops a bigger burst of ink
   addEventListener('pointerdown', function (e) {
     if (e.pointerType && e.pointerType !== 'mouse') return;
-    var c = colour(); c[3] = 1.6;
-    var a = Math.random() * 6.283, f = FORCE * 0.012;
+    var c = colour(); c[3] = 7;
+    var a = Math.random() * 6.283, f = FORCE * 0.02;
     queue.push([e.clientX / innerWidth, 1 - e.clientY / innerHeight, Math.cos(a) * f, Math.sin(a) * f, c]);
     wake();
   }, { passive: true });
