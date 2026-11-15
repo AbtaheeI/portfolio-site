@@ -1,0 +1,72 @@
+name: checks
+
+# Vercel builds and deploys on every push. This workflow runs the same build,
+# fails loudly if the site gets slower, less accessible or breaks a link,
+# and records the Lighthouse result for the status page.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: write   # to record build results on the status-data branch
+
+concurrency:
+  group: checks-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Copy rules (no em dashes, no hype words)
+        run: npm run check:copy
+
+      - name: Validate HTML
+        run: npm run check:html
+
+      - name: Check internal links
+        run: npm run check:links
+
+      - name: Lighthouse, 3 runs, median against budget
+        run: npx lhci autorun
+
+      - name: Keep the Lighthouse reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse
+          path: .lighthouseci/reports
+
+      - name: Record build on status-data branch
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        run: |
+          git config user.name "status-bot"
+          git config user.email "status-bot@users.noreply.github.com"
+          git fetch origin status-data || true
+          if git show-ref --quiet refs/remotes/origin/status-data; then
+            git worktree add ../status origin/status-data
+            cd ../status && git switch -c status-data && cd -
+          else
+            git worktree add --detach ../status
+            cd ../status && git switch --orphan status-data && cd -
+          fi
+          node scripts/record-build.mjs ../status/builds.json
+          cd ../status
+          git add builds.json
+          git commit -m "build ${GITHUB_SHA::7}" || exit 0
+          git push origin status-data

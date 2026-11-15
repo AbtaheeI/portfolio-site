@@ -1,0 +1,21 @@
+{
+  "name": "abtaheeislam.com",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build:map": "esbuild src/map3d.js --bundle --minify --format=esm --target=es2020 --outfile=assets/map3d.js",
+    "build": "npm run build:map && sh scripts/build.sh",
+    "check:html": "html-validate \"_site/**/*.html\"",
+    "check:links": "linkinator _site --recurse --skip \"^https?://(?!localhost)\"",
+    "check:copy": "node scripts/check-copy.mjs",
+    "lighthouse": "lhci autorun",
+    "serve": "npx http-server _site -p 8080 -c-1"
+  },
+  "devDependencies": {
+    "@lhci/cli": "^0.14.0",
+    "esbuild": "^0.24.0",
+    "html-validate": "^9.0.0",
+    "linkinator": "^6.1.0",
+    "three": "0.170.0"
+  }
+}

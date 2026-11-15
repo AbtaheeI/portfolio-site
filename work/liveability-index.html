@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Greater Sydney Liveability Index · Abtahee Islam</title>
+<meta name="description" content="A PostgreSQL and PostGIS pipeline that scores 66 inner Sydney SA2 regions from live NSW Government data.">
+<meta name="theme-color" content="#0b0d14">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../assets/site.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="nav"><div class="wrap">
+  <div class="brand"><a href="../">Abtahee Islam</a></div>
+  <nav class="nav-links" aria-label="Main"><a class="hide-sm" href="../#work">Work</a><a href="../CVA.pdf">Resume</a><a href="https://github.com/FromScratchToDataScientist">GitHub</a></nav>
+</div></header>
+
+<main id="main" class="article">
+  <div class="wrap">
+    <p class="crumbs"><a href="../#work">Work</a> / Liveability index</p>
+    <h1>Scoring inner Sydney with PostGIS</h1>
+    <p class="lede">A database that pulls live NSW Government data, joins it to ABS statistical areas with spatial queries, and gives each of 66 SA2 regions a single liveability score between 0 and 1.</p>
+
+    <dl class="meta">
+      <div><dt>Type</dt><dd>Data pipeline, university project</dd></div>
+      <div><dt>Stack</dt><dd>PostgreSQL, PostGIS, Python, Plotly</dd></div>
+      <div><dt>Coverage</dt><dd>66 SA2 regions, 905,345 residents</dd></div>
+      <div><dt>Links</dt><dd><a class="link" href="../liveability_map.html">Interactive map</a></dd></div>
+    </dl>
+
+    <div class="prose">
+      <h2>The question</h2>
+      <p>If you only had public data, could you rank Sydney suburbs on how liveable they are, and could you defend the ranking? I scoped it to three ABS SA4 areas (Inner West, City and Inner South, Eastern Suburbs), which gives 66 SA2 regions. SA2 is the level the ABS publishes population at, so every other dataset had to be brought down to it.</p>
+
+      <h2>Data in</h2>
+      <ul>
+        <li><strong>SA2 boundaries and population</strong> from the ABS, including total residents and young residents</li>
+        <li><strong>Transport stops</strong> pulled live from a NSW Government API with a Python collector: 5,870 stops in scope</li>
+        <li><strong>Businesses, schools and points of interest</strong> as point and count datasets: 3,204 points of interest in scope</li>
+      </ul>
+      <p>Each source landed in its own table in a normalised schema, keyed by SA2 code where it had one and by geometry where it didn't.</p>
+    </div>
+
+    <figure class="diagram">
+      <svg viewBox="0 0 900 200" role="img" aria-labelledby="dg1">
+        <title id="dg1">Pipeline: NSW Gov API and ABS files into Python ingestion, PostgreSQL with PostGIS, scoring in SQL, and a Plotly map.</title>
+        <defs><marker id="a1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 10 5 0 10z" fill="rgba(238,240,245,.4)"/></marker></defs>
+        <rect class="dg-box" x="10" y="30" width="150" height="56" rx="8"/><text class="dg-t" x="24" y="54">NSW Gov API</text><text class="dg-s" x="24" y="72">transport stops</text>
+        <rect class="dg-box" x="10" y="114" width="150" height="56" rx="8"/><text class="dg-t" x="24" y="138">ABS files</text><text class="dg-s" x="24" y="156">SA2, population</text>
+        <rect class="dg-box" x="210" y="72" width="150" height="56" rx="8"/><text class="dg-t" x="224" y="96">Python</text><text class="dg-s" x="224" y="114">collect, clean, load</text>
+        <rect class="dg-box hl" x="410" y="62" width="190" height="76" rx="8"/><text class="dg-t" x="424" y="88">PostgreSQL + PostGIS</text><text class="dg-s" x="424" y="106">ST_Within joins</text><text class="dg-s" x="424" y="122">GiST indexes</text>
+        <rect class="dg-box" x="650" y="30" width="110" height="56" rx="8"/><text class="dg-t" x="664" y="54">Scoring</text><text class="dg-s" x="664" y="72">z, sum, logistic</text>
+        <rect class="dg-box" x="650" y="114" width="110" height="56" rx="8"/><text class="dg-t" x="664" y="138">Plotly</text><text class="dg-s" x="664" y="156">choropleth</text>
+        <rect class="dg-box" x="800" y="72" width="90" height="56" rx="8"/><text class="dg-t" x="814" y="96">Map</text><text class="dg-s" x="814" y="114">this site</text>
+        <path class="dg-line" d="M160 58h25v42h25" marker-end="url(#a1)"/><path class="dg-line" d="M160 142h25v-42h25" marker-end="url(#a1)"/>
+        <path class="dg-line" d="M360 100h50" marker-end="url(#a1)"/>
+        <path class="dg-line" d="M600 90h25v-32h25" marker-end="url(#a1)"/><path class="dg-line" d="M705 86v28" marker-end="url(#a1)"/>
+        <path class="dg-line" d="M760 142h20v-42h20" marker-end="url(#a1)"/>
+      </svg>
+      <figcaption>Everything after ingestion is SQL. The browser map on the homepage reads a 54 KB export of the final table.</figcaption>
+    </figure>
+
+    <div class="prose">
+      <h2>Spatial joins</h2>
+      <p>Most of the inputs are points. To count them per region I joined each point to the SA2 polygon that contains it. Normalising by population turns raw counts into something comparable between a dense inner suburb and a big low-density one.</p>
+    </div>
+<pre class="code"><span class="c">-- map transport stops to SA2 boundaries, per 1,000 residents</span>
+<span class="k">SELECT</span> sa2.sa2_code,
+       sa2.sa2_name,
+       <span class="k">COUNT</span>(stop.stop_id) <span class="k">AS</span> transport_stops,
+       <span class="k">ROUND</span>(<span class="k">COUNT</span>(stop.stop_id)::numeric
+             / <span class="k">NULLIF</span>(pop.total_population, 0) * 1000, 2) <span class="k">AS</span> stops_per_1000
+<span class="k">FROM</span> sa2_boundaries sa2
+<span class="k">JOIN</span> population_stats pop <span class="k">ON</span> pop.sa2_code = sa2.sa2_code
+<span class="k">LEFT JOIN</span> transport_stops stop <span class="k">ON</span> <span class="k">ST_Within</span>(stop.geom, sa2.geom)
+<span class="k">GROUP BY</span> sa2.sa2_code, sa2.sa2_name, pop.total_population;
+
+<span class="c">-- without this, every stop is tested against every polygon</span>
+<span class="k">CREATE INDEX</span> idx_transport_geom <span class="k">ON</span> transport_stops <span class="k">USING</span> GIST (geom);</pre>
+    <div class="prose">
+      <p>The GiST index is what makes the join usable. Without it PostGIS has to test every stop against every polygon. With it, it checks bounding boxes first and only runs the exact containment test on the few polygons that could match.</p>
+
+      <h2>Turning four numbers into one</h2>
+      <p>Each region ends up with four inputs: business density, transport stops, schools relative to young residents, and points of interest. They're on completely different scales, so I converted each to a z-score, added the four together, and passed the sum through a logistic function to land between 0 and 1.</p>
+      <p><code>score = 1 / (1 + e<sup>-(z_business + z_stops + z_schools + z_poi)</sup>)</code></p>
+      <p>Equal weights was a deliberate choice. I had no defensible reason to say transport matters twice as much as schools, so I didn't pretend to.</p>
+
+      <h2>What came out</h2>
+      <ul>
+        <li>Top: Millers Point, Banksmeadow, and Rose Bay - Vaucluse - Watsons Bay</li>
+        <li>Bottom: Zetland, Pyrmont and Rhodes</li>
+        <li>The median region scores 0.38, and 8 of 66 score above 0.9</li>
+      </ul>
+
+      <h2>What I'd change</h2>
+      <h3>Small populations break per-capita measures</h3>
+      <p>Banksmeadow ranks second. It's mostly industrial land next to Port Botany with 507 residents, so its business and school measures get divided by a tiny number and its z-scores come out at 5.9 and 7.3. That's a denominator problem, not a liveable suburb. I'd set a minimum population, or shrink small regions towards the mean, before ranking anything.</p>
+      <h3>The logistic squashes the top end</h3>
+      <p>Millers Point has a z-sum of 11.5 and Banksmeadow 10.4, but both round to a score of 1.000. Rose Bay, at 4.1, gets 0.984. The logistic flattens out so fast that the index can't tell the top regions apart. Reporting percentile ranks, or the raw z-sum next to the score, would fix that.</p>
+      <h3>The bottom of the list needs a second look</h3>
+      <p>Pyrmont, Ultimo and Zetland are central and well served, and they sit near the bottom. I haven't pinned down why yet, so I wouldn't trust that end of the ranking until I have.</p>
+      <h3>Not all inputs are normalised the same way</h3>
+      <p>Stops and points of interest go in as counts, so bigger regions get a head start. I'd normalise everything by population or area, and show both versions.</p>
+
+      <h2>If I ran this as a service</h2>
+      <p>Right now it's a pipeline I run by hand. To keep it running unattended I'd:</p>
+      <ul>
+        <li>Schedule the collector and make loads idempotent, so a rerun can't double-count stops</li>
+        <li>Track data freshness as the main SLI: how old is the newest row from the API</li>
+        <li>Alert when the API's response shape changes or a load returns far fewer rows than last time</li>
+        <li>Version each scoring run so a change to the formula never silently rewrites old results</li>
+      </ul>
+    </div>
+
+    <div class="next"><a href="../#work">Back to all work</a><a href="groupsync.html">Next: GroupSync</a></div>
+  </div>
+</main>
+
+<footer class="foot"><div class="wrap"><span>Abtahee Islam · Sydney</span><span><a href="mailto:abtaheeislam@gmail.com">abtaheeislam@gmail.com</a></span></div></footer>
+</body>
+</html>

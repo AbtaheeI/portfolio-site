@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>GroupSync · Abtahee Islam</title>
+<meta name="description" content="A real-time collaboration app with AI commitment detection, built with Next.js, Socket.io and SQLite.">
+<meta name="theme-color" content="#0b0d14">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../assets/site.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="nav"><div class="wrap">
+  <div class="brand"><a href="../">Abtahee Islam</a></div>
+  <nav class="nav-links" aria-label="Main"><a class="hide-sm" href="../#work">Work</a><a href="../CVA.pdf">Resume</a><a href="https://github.com/FromScratchToDataScientist">GitHub</a></nav>
+</div></header>
+
+<main id="main" class="article">
+  <div class="wrap">
+    <p class="crumbs"><a href="../#work">Work</a> / GroupSync</p>
+    <h1>GroupSync: group chat that remembers who said they'd do what</h1>
+    <p class="lede">A real-time collaboration app built for INFO2222. Messages sync between everyone in a group as they're sent, and an AI step picks out commitments from the conversation so they don't get buried.</p>
+
+    <dl class="meta">
+      <div><dt>Type</dt><dd>Web app, university project</dd></div>
+      <div><dt>Stack</dt><dd>Next.js, Node.js, Socket.io, SQLite</dd></div>
+      <div><dt>Course</dt><dd>INFO2222, USyd</dd></div>
+      <div><dt>Focus</dt><dd>Real-time sync, persistence</dd></div>
+    </dl>
+
+    <figure class="diagram">
+      <svg viewBox="0 0 900 220" role="img" aria-labelledby="dg2">
+        <title id="dg2">Browsers connect to a Next.js server over Socket.io. The server writes to SQLite and calls a commitment detection step, then broadcasts to the group's room.</title>
+        <defs><marker id="a2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 10 5 0 10z" fill="rgba(238,240,245,.4)"/></marker></defs>
+        <rect class="dg-box" x="10" y="20" width="160" height="50" rx="8"/><text class="dg-t" x="24" y="50">Browser A</text>
+        <rect class="dg-box" x="10" y="85" width="160" height="50" rx="8"/><text class="dg-t" x="24" y="115">Browser B</text>
+        <rect class="dg-box" x="10" y="150" width="160" height="50" rx="8"/><text class="dg-t" x="24" y="180">Browser C</text>
+        <rect class="dg-box hl" x="280" y="60" width="230" height="100" rx="8"/><text class="dg-t" x="296" y="88">Next.js server</text><text class="dg-s" x="296" y="108">pages and API routes</text><text class="dg-s" x="296" y="126">Socket.io rooms, one per group</text>
+        <rect class="dg-box" x="620" y="30" width="200" height="56" rx="8"/><text class="dg-t" x="636" y="54">SQLite</text><text class="dg-s" x="636" y="72">users, groups, scheduling</text>
+        <rect class="dg-box" x="620" y="134" width="200" height="56" rx="8"/><text class="dg-t" x="636" y="158">Commitment detection</text><text class="dg-s" x="636" y="176">AI step on new messages</text>
+        <path class="dg-line" d="M170 45h55v55h55" marker-end="url(#a2)"/><path class="dg-line" d="M170 110h110"/><path class="dg-line" d="M170 175h55v-55h55"/>
+        <path class="dg-line" d="M510 90h55v-32h55" marker-end="url(#a2)"/><path class="dg-line" d="M510 130h55v32h55" marker-end="url(#a2)"/>
+      </svg>
+      <figcaption>One server holds the socket connections and is the only writer to the database.</figcaption>
+    </figure>
+
+    <div class="prose">
+      <h2>What I built</h2>
+      <ul>
+        <li>The client-server contracts: which events exist, what each one carries, and who's allowed to send it</li>
+        <li>Real-time state sync with Socket.io events, so every member sees the same view without refreshing</li>
+        <li>The SQLite schema and data access layer for users, groups and scheduling</li>
+        <li>The pipeline that feeds group chat to the commitment detection step and turns its output into action items</li>
+      </ul>
+
+      <h2>How a message moves</h2>
+      <ul>
+        <li>A client sends the message over its open Socket.io connection</li>
+        <li>The server writes it to SQLite, so it survives a refresh or a dropped connection</li>
+        <li>The server broadcasts it to that group's room, and every connected member sees it straight away</li>
+        <li>The commitment detection step reads new messages and flags the ones where someone takes on a task</li>
+      </ul>
+
+      <h2>Why these pieces</h2>
+      <p><strong>Socket.io over plain WebSockets</strong> because it handles reconnects and has rooms built in, which maps cleanly onto groups.</p>
+      <p><strong>SQLite</strong> because it's one file with no server to run, which suits a course project with a small number of users. The tradeoff is that it's built for one writer at a time.</p>
+      <p><strong>Next.js</strong> because the pages and the API live in one codebase and deploy together.</p>
+
+      <h2>What I'd change to run it for real</h2>
+      <ul>
+        <li>Move from SQLite to PostgreSQL once there's more than one server or a lot of concurrent writes</li>
+        <li>Add the Socket.io Redis adapter so rooms work across several server instances</li>
+        <li>Run commitment detection off a queue so a slow AI call never delays message delivery</li>
+        <li>Measure message delivery latency (p95 from send to receive) and treat it as the main SLI</li>
+      </ul>
+    </div>
+
+    <div class="next"><a href="liveability-index.html">Previous: Liveability index</a><a href="aircraft-maintenance.html">Next: Aircraft maintenance</a></div>
+  </div>
+</main>
+
+<footer class="foot"><div class="wrap"><span>Abtahee Islam · Sydney</span><span><a href="mailto:abtaheeislam@gmail.com">abtaheeislam@gmail.com</a></span></div></footer>
+</body>
+</html>

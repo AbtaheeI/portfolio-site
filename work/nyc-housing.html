@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>NYC housing price models · Abtahee Islam</title>
+<meta name="description" content="An R pipeline comparing stepwise AIC regression with a random forest on 1,734 New York residential sales.">
+<meta name="theme-color" content="#0b0d14">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../assets/site.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="nav"><div class="wrap">
+  <div class="brand"><a href="../">Abtahee Islam</a></div>
+  <nav class="nav-links" aria-label="Main"><a class="hide-sm" href="../#work">Work</a><a href="../CVA.pdf">Resume</a><a href="https://github.com/FromScratchToDataScientist">GitHub</a></nav>
+</div></header>
+
+<main id="main" class="article">
+  <div class="wrap">
+    <p class="crumbs"><a href="../#work">Work</a> / NYC housing models</p>
+    <h1>Predicting New York house prices in R</h1>
+    <p class="lede">A staged R pipeline that cleans 1,734 residential sales, picks predictors with stepwise AIC, and compares a linear model against a random forest under k-fold cross-validation.</p>
+
+    <dl class="meta">
+      <div><dt>Type</dt><dd>Modelling, university project</dd></div>
+      <div><dt>Stack</dt><dd>R, ggplot2, randomForest, Quarto</dd></div>
+      <div><dt>Data</dt><dd>1,734 sales</dd></div>
+      <div><dt>Output</dt><dd>Quarto report</dd></div>
+    </dl>
+
+    <div class="prose">
+      <h2>How it's built</h2>
+      <p>The pipeline runs in ordered stages: ingest, clean, transform, model, report. Each stage can be rerun on its own, which made it easy to change a cleaning rule and see what it did to the models without rerunning everything by hand.</p>
+
+      <h2>Two models, one test</h2>
+      <p>I started with a linear model on every candidate predictor and let stepwise AIC drop the ones that weren't pulling their weight, which left 7. Then I trained a random forest on the same data and compared both with k-fold cross-validation, so neither model got to look good on one lucky split.</p>
+    </div>
+<pre class="code"><span class="c"># model comparison after the cleaning and transform stages</span>
+full_model &lt;- <span class="k">lm</span>(price ~ ., data = train_clean)
+step_model &lt;- <span class="k">step</span>(full_model, direction = "both", trace = 0)
+
+rf_model &lt;- <span class="k">randomForest</span>(price ~ ., data = train_clean,
+                         ntree = 500, importance = TRUE)
+
+<span class="c"># compare on held-out RMSE</span>
+<span class="k">rmse</span>(<span class="k">predict</span>(step_model, test_clean), test_clean$price)
+<span class="k">rmse</span>(<span class="k">predict</span>(rf_model, test_clean), test_clean$price)</pre>
+    <div class="prose">
+      <h2>Results</h2>
+      <ul>
+        <li>The best model explains 64% of the variance in price (R² 0.64)</li>
+        <li>Living area and land value were the strongest signals by a long way</li>
+        <li>The final report is a Quarto document with an executive summary, method notes and charts</li>
+      </ul>
+      <p>0.64 is an honest number for this data. House prices depend on plenty that isn't in the dataset, like condition and the exact street, so I'd be suspicious of anything much higher without new features.</p>
+
+      <h2>What I'd change</h2>
+      <ul>
+        <li>Model log price instead of price, since the errors grow with the value of the house</li>
+        <li>Report RMSE in dollars alongside R², because that's what someone pricing a house actually cares about</li>
+        <li>Wrap the stages in a <code>targets</code> pipeline so only the stages whose inputs changed get rerun</li>
+      </ul>
+    </div>
+
+    <div class="next"><a href="aircraft-maintenance.html">Previous: Aircraft maintenance</a><a href="../#work">Back to all work</a></div>
+  </div>
+</main>
+
+<footer class="foot"><div class="wrap"><span>Abtahee Islam · Sydney</span><span><a href="mailto:abtaheeislam@gmail.com">abtaheeislam@gmail.com</a></span></div></footer>
+</body>
+</html>

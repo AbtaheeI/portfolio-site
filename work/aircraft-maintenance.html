@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Aircraft Maintenance Information System · Abtahee Islam</title>
+<meta name="description" content="A relational model and SQL reports for maintenance testing at Western Sydney Airport, designed from a CASA-regulated brief.">
+<meta name="theme-color" content="#0b0d14">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../assets/site.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="nav"><div class="wrap">
+  <div class="brand"><a href="../">Abtahee Islam</a></div>
+  <nav class="nav-links" aria-label="Main"><a class="hide-sm" href="../#work">Work</a><a href="../CVA.pdf">Resume</a><a href="https://github.com/FromScratchToDataScientist">GitHub</a></nav>
+</div></header>
+
+<main id="main" class="article">
+  <div class="wrap">
+    <p class="crumbs"><a href="../#work">Work</a> / Aircraft maintenance</p>
+    <h1>Modelling aircraft maintenance tests from a regulator's brief</h1>
+    <p class="lede">Western Sydney Airport needed to track which technician ran which CASA test on which aircraft, and report on it. I turned the requirements brief into a Chen ERD and wrote the reporting queries on top.</p>
+
+    <dl class="meta">
+      <div><dt>Type</dt><dd>Data modelling, university project</dd></div>
+      <div><dt>Stack</dt><dd>SQL, PostgreSQL, Chen notation</dd></div>
+      <div><dt>Entities</dt><dd>5</dd></div>
+      <div><dt>Reports</dt><dd>3 stakeholder queries</dd></div>
+    </dl>
+
+    <figure class="diagram">
+      <svg viewBox="0 0 900 300" role="img" aria-labelledby="dg3">
+        <title id="dg3">Entities: Airline owns many Aircraft. Testing Event links one Aircraft, one Technician and one CASA Test Spec.</title>
+        <rect class="dg-box" x="20" y="30" width="170" height="64" rx="8"/><text class="dg-t" x="36" y="56">Airline</text><text class="dg-s" x="36" y="76">airline_id, name</text>
+        <rect class="dg-box" x="20" y="200" width="170" height="64" rx="8"/><text class="dg-t" x="36" y="226">Aircraft</text><text class="dg-s" x="36" y="246">aircraft_id, airline_id, model</text>
+        <rect class="dg-box hl" x="350" y="110" width="200" height="80" rx="8"/><text class="dg-t" x="366" y="136">Testing Event</text><text class="dg-s" x="366" y="156">aircraft_id, tech_id, spec_id</text><text class="dg-s" x="366" y="174">tested_at, result</text>
+        <rect class="dg-box" x="710" y="30" width="170" height="64" rx="8"/><text class="dg-t" x="726" y="56">Technician</text><text class="dg-s" x="726" y="76">tech_id, name</text>
+        <rect class="dg-box" x="710" y="200" width="170" height="64" rx="8"/><text class="dg-t" x="726" y="226">CASA Test Spec</text><text class="dg-s" x="726" y="246">spec_id, description</text>
+        <path class="dg-line" d="M105 94v106"/><text class="dg-s" x="112" y="120">1</text><text class="dg-s" x="112" y="192">N</text>
+        <path class="dg-line" d="M190 232h80v-82h80"/><text class="dg-s" x="198" y="226">1</text><text class="dg-s" x="334" y="144">N</text>
+        <path class="dg-line" d="M710 62h-80v68h-80"/><text class="dg-s" x="694" y="56">1</text><text class="dg-s" x="558" y="124">N</text>
+        <path class="dg-line" d="M710 232h-80v-62h-80"/><text class="dg-s" x="694" y="226">1</text><text class="dg-s" x="558" y="164">N</text>
+      </svg>
+      <figcaption>Simplified from the Chen diagram. The testing event is the centre of the model: every report reads from it.</figcaption>
+    </figure>
+
+    <div class="prose">
+      <h2>From brief to model</h2>
+      <p>The brief described the work in plain language: airlines own aircraft, technicians run tests, CASA defines the specifications those tests follow. The nouns became entities and the verbs became relationships. The decision that mattered most was treating a test as its own entity, a <strong>Testing Event</strong>, rather than a relationship between a technician and an aircraft. That gave it a place to store when it happened and whether it passed, and it made each report a simple query.</p>
+      <p>I documented every assumption the brief left open, along with the model's limits, so a reviewer could see which parts came from the requirements and which came from me.</p>
+
+      <h2>The reports</h2>
+      <ul>
+        <li><strong>Test history by aircraft</strong>: every test an aircraft has had, newest first</li>
+        <li><strong>Technician workload</strong>: tests per technician over a period</li>
+        <li><strong>Pass rate by specification</strong>: which CASA specs fail most often</li>
+      </ul>
+    </div>
+<pre class="code"><span class="c">-- pass rate by CASA test specification (simplified)</span>
+<span class="k">SELECT</span> s.spec_id,
+       s.description,
+       <span class="k">COUNT</span>(*) <span class="k">AS</span> tests,
+       <span class="k">ROUND</span>(100.0 * <span class="k">AVG</span>(<span class="k">CASE WHEN</span> e.result = 'pass' <span class="k">THEN</span> 1 <span class="k">ELSE</span> 0 <span class="k">END</span>), 1) <span class="k">AS</span> pass_rate_pct
+<span class="k">FROM</span> testing_event e
+<span class="k">JOIN</span> casa_test_spec s <span class="k">ON</span> s.spec_id = e.spec_id
+<span class="k">GROUP BY</span> s.spec_id, s.description
+<span class="k">ORDER BY</span> pass_rate_pct <span class="k">ASC</span>;</pre>
+    <div class="prose">
+      <h2>What I'd add next</h2>
+      <ul>
+        <li>An index on <code>testing_event(aircraft_id, tested_at)</code>, since the history report filters and sorts on exactly those columns</li>
+        <li>An audit trail on results. In a regulated setting, a test result being edited after the fact should leave a record</li>
+        <li>Constraints that stop a technician being assigned a test they aren't certified for</li>
+      </ul>
+    </div>
+
+    <div class="next"><a href="groupsync.html">Previous: GroupSync</a><a href="nyc-housing.html">Next: NYC housing models</a></div>
+  </div>
+</main>
+
+<footer class="foot"><div class="wrap"><span>Abtahee Islam · Sydney</span><span><a href="mailto:abtaheeislam@gmail.com">abtaheeislam@gmail.com</a></span></div></footer>
+</body>
+</html>

@@ -1,0 +1,48 @@
+name: uptime check
+
+on:
+  schedule:
+    - cron: "7,37 * * * *"   # every 30 minutes, off the hour when GitHub is busiest
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: uptime
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: scripts
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Check and record
+        run: |
+          git config user.name "status-bot"
+          git config user.email "status-bot@users.noreply.github.com"
+          git fetch origin status-data || true
+          if git show-ref --quiet refs/remotes/origin/status-data; then
+            git worktree add ../status origin/status-data
+            cd ../status && git switch -c status-data && cd -
+          else
+            git worktree add --detach ../status
+            cd ../status && git switch --orphan status-data && cd -
+          fi
+          set +e
+          node scripts/uptime-check.mjs ../status/uptime.json
+          STATUS=$?
+          set -e
+          cd ../status
+          git add uptime.json
+          git commit -m "uptime $(date -u +%FT%TZ)" -q || true
+          for i in 1 2 3; do git pull --rebase -q origin status-data 2>/dev/null; git push -q origin status-data && break; sleep 5; done
+          exit $STATUS

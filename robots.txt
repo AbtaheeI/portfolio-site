@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://abtaheeislam.com/sitemap.xml

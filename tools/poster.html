@@ -1,0 +1,7 @@
+<!doctype html><html><head><style>html,body{margin:0;background:#0b0d14}#m{position:relative;width:1200px;height:1200px}</style></head>
+<body><div id="m"></div><script type="module">
+import { mount } from '../assets/map3d.js';
+const d = await (await fetch('../data/sa2.json')).json();
+mount(document.getElementById('m'), d, { instant: true });
+setTimeout(()=>document.title='ready', 800);
+</script></body></html>

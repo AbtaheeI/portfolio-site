@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Status · abtaheeislam.com</title>
+<meta name="description" content="Uptime checks, build history and performance budgets for abtaheeislam.com.">
+<meta name="theme-color" content="#0b0d14">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../assets/site.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="nav"><div class="wrap">
+  <div class="brand"><a href="../">Abtahee Islam</a></div>
+  <nav class="nav-links" aria-label="Main"><a class="hide-sm" href="../#work">Work</a><a href="../CVA.pdf">Resume</a><a href="https://github.com/FromScratchToDataScientist">GitHub</a></nav>
+</div></header>
+
+<main id="main" class="article">
+  <div class="wrap">
+    <p class="crumbs"><a href="../">Home</a> / Status</p>
+    <h1>Is the site up?</h1>
+    <p class="lede" id="headline">Loading the latest checks.</p>
+
+    <div class="board" aria-live="polite">
+      <div class="tile"><div class="k">Availability, 30 days</div><div class="v" id="t-avail">·</div><div class="s">target 99.5%</div></div>
+      <div class="tile"><div class="k">Error budget left</div><div class="v" id="t-budget">·</div><div class="s">0.5% of checks may fail</div></div>
+      <div class="tile"><div class="k">Median response</div><div class="v" id="t-lat">·</div><div class="s">homepage, from GitHub Actions</div></div>
+      <div class="tile"><div class="k">Checks recorded</div><div class="v" id="t-count">·</div><div class="s">one every 30 minutes</div></div>
+    </div>
+
+    <div class="prose wide" style="max-width:none">
+      <h2>Last 96 checks</h2>
+      <p class="muted" style="margin-top:4px">Roughly the last two days. Each bar is one request to the homepage and the resume.</p>
+    </div>
+    <div class="bars" id="bars" role="img" aria-label="Recent uptime checks"></div>
+    <div id="checks-empty" class="empty" hidden>No checks recorded yet. The first one runs within 30 minutes of the scheduled workflow being turned on.</div>
+
+    <div class="prose wide" style="max-width:none">
+      <h2>Recent builds</h2>
+      <p class="muted" style="margin-top:4px">Every push runs Lighthouse three times on the mobile profile. These are the medians. A build that misses the budget fails the check and shows a red cross on the commit.</p>
+    </div>
+    <div class="table-scroll">
+      <table class="log" id="builds" hidden>
+        <thead><tr><th>When (UTC)</th><th>Commit</th><th>Perf</th><th>A11y</th><th>Best practice</th><th>SEO</th><th>LCP</th><th>Page weight</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <div id="builds-empty" class="empty">Loading build history.</div>
+
+    <div class="prose">
+      <h2>Targets</h2>
+      <ul>
+        <li><strong>Availability</strong>: 99.5% of scheduled checks succeed over 30 days. That allows about 7 failed checks a month.</li>
+        <li><strong>Speed</strong>: Lighthouse performance at least 90 and largest contentful paint under 2.5 seconds on the mobile profile.</li>
+        <li><strong>Accessibility</strong>: Lighthouse accessibility at least 95.</li>
+        <li><strong>Weight</strong>: under 4 KB of JavaScript before the 3D map. The map is about 130 KB compressed and only loads on desktop.</li>
+      </ul>
+
+      <h2>What this does and doesn't measure</h2>
+      <p>The site is hosted on Vercel and the checks run from GitHub Actions, so the checker and the thing being checked are on different providers. It's still one probe from one place, so it can't tell a real outage from a network blip near GitHub. GitHub also delays scheduled jobs when it's busy, so gaps between bars don't always mean anything.</p>
+      <p>If I needed real monitoring I'd probe from a few regions and alert on two failed checks in a row, not one.</p>
+    </div>
+  </div>
+</main>
+
+<footer class="foot"><div class="wrap"><span>Abtahee Islam · Sydney</span><span><a href="https://github.com/AbtaheeI/portfolio-site">source</a></span></div></footer>
+
+<script>
+(function () {
+  // Status data lives on a separate branch so the checks never trigger a deploy or clutter main.
+  var DATA = 'https://raw.githubusercontent.com/AbtaheeI/portfolio-site/status-data/';
+  var TARGET = 0.995;
+
+  function get(name) {
+    return fetch(DATA + name, { cache: 'no-store' }).then(function (r) { if (!r.ok) throw 0; return r.json(); });
+  }
+  function pct(x) { return (x * 100).toFixed(x === 1 ? 0 : 2) + '%'; }
+  function $(id) { return document.getElementById(id); }
+
+  get('uptime.json').then(function (u) {
+    var all = (u && u.checks) || [];
+    if (!all.length) throw 0;
+    var cutoff = Date.now() - 30 * 864e5;
+    var month = all.filter(function (c) { return Date.parse(c.t) >= cutoff; });
+    var ok = month.filter(function (c) { return c.ok; }).length;
+    var avail = month.length ? ok / month.length : 1;
+    var allowed = month.length * (1 - TARGET);
+    var failed = month.length - ok;
+    var left = allowed > 0 ? Math.max(0, 1 - failed / allowed) : (failed ? 0 : 1);
+    var lats = month.filter(function (c) { return c.ok && c.ms; }).map(function (c) { return c.ms; }).sort(function (a, b) { return a - b; });
+    var med = lats.length ? lats[Math.floor(lats.length / 2)] : null;
+    var last = all[all.length - 1];
+
+    $('t-avail').textContent = pct(avail);
+    $('t-budget').textContent = pct(left);
+    $('t-lat').textContent = med ? med + ' ms' : '·';
+    $('t-count').textContent = month.length.toLocaleString('en-AU');
+    $('headline').textContent = (last.ok ? 'Yes. ' : 'Not right now. ') + 'Last checked ' + new Date(last.t).toLocaleString('en-AU', { dateStyle: 'medium', timeStyle: 'short' }) + '.';
+
+    var bars = $('bars');
+    all.slice(-96).forEach(function (c) {
+      var i = document.createElement('i');
+      i.dataset.s = c.ok ? 'ok' : 'bad';
+      i.title = c.t + (c.ok ? ' · ' + c.ms + ' ms' : ' · failed (' + (c.code || 'no response') + ')');
+      bars.appendChild(i);
+    });
+  }).catch(function () {
+    $('headline').textContent = 'No uptime data yet. The page itself loaded, so it is up for you.';
+    $('bars').hidden = true;
+    $('checks-empty').hidden = false;
+  });
+
+  get('builds.json').then(function (b) {
+    var rows = ((b && b.builds) || []).slice(-15).reverse();
+    if (!rows.length) throw 0;
+    var tb = document.querySelector('#builds tbody');
+    rows.forEach(function (r) {
+      var tr = document.createElement('tr');
+      [r.t.replace('T', ' ').slice(0, 16), r.sha.slice(0, 7), r.perf, r.a11y, r.bp, r.seo, (r.lcp / 1000).toFixed(2) + ' s', Math.round(r.bytes / 1024) + ' KB']
+        .forEach(function (v) { var td = document.createElement('td'); td.textContent = v; tr.appendChild(td); });
+      tb.appendChild(tr);
+    });
+    $('builds').hidden = false;
+    $('builds-empty').hidden = true;
+  }).catch(function () { $('builds-empty').textContent = 'No builds recorded yet. The next push to main will add one.'; });
+})();
+</script>
+</body>
+</html>
