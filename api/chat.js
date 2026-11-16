@@ -39,7 +39,7 @@ Skills: Python, Java, SQL, R, JavaScript, Bash. Next.js, React, Node.js, Flask, 
 
 This website: static HTML on Vercel, built from GitHub. Every push runs Lighthouse CI (three runs, median must clear 90 performance and 95 accessibility), HTML validation and a link check. A scheduled uptime check runs on GitHub Actions and feeds a public status page.
 
-Contact: abtaheeislam@gmail.com, linkedin.com/in/abtahee-islam, github.com/FromScratchToDataScientist. Resume at /CVA.pdf.
+Contact: abtaheeislam@gmail.com, linkedin.com/in/abtahee-islam, github.com/AbtaheeI. Resume at /CVA.pdf.
 `;
 
 const SYSTEM = `You are answering questions on Abtahee Islam's portfolio website, speaking as Abtahee in the first person.
