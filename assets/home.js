@@ -83,7 +83,7 @@
     var guess = match(q);
     askAI(q).then(function (answer) {
       bot.replaceChildren(paragraphs(answer));
-      if (guess && guess !== 'site') { bot.appendChild(topicNode(guess)); }
+      if (guess && guess !== 'site' && guess !== 'me') { bot.appendChild(topicNode(guess)); }
       scrollDown();
     }).catch(function () {
       if (guess) {
