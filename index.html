@@ -145,7 +145,7 @@
 
     <section class="answer" data-topic="site" aria-label="How this site is run">
       <p>I'm about to work in reliability, so I run this site like a small service. Every push builds on GitHub Actions and fails if the site gets slower, less accessible, or has a broken link. Lighthouse runs three times and the median has to clear 90 for performance and 95 for accessibility.</p>
-      <p>A scheduled job checks the site every 30 minutes and logs the result. The dot on the "A" in the top corner is that check: green means the last one passed. <a class="link" href="status/">See the status page</a>.</p>
+      <p>A scheduled job on GitHub Actions checks the site and logs the result. The dot on the "A" in the top corner is that check: green means the last one passed. <a class="link" href="status/">See the status page</a>.</p>
     </section>
   </div>
 </main>

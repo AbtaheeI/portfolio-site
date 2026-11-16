@@ -7,7 +7,7 @@ My portfolio. Static HTML, CSS and a little JavaScript, hosted on Vercel.
 - `data/sa2.json`: 66 SA2 regions exported from my liveability index (simplified polygons, scores)
 - `scripts/`: build, copy check, uptime check, build recorder
 - `.github/workflows/checks.yml`: build, copy rules, HTML validation, link check, Lighthouse (3 runs, median against budget) on every push
-- `.github/workflows/uptime.yml`: checks the live site every 30 minutes and writes to the `status-data` branch, which the status page reads
+- `.github/workflows/uptime.yml`: checks the live site on a schedule (GitHub decides the exact timing, often every few hours on a free account) and writes to the `status-data` branch, which the status page reads
 
 ## Local
 

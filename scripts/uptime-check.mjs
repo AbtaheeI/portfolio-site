@@ -27,7 +27,7 @@ const row = {
 
 const data = existsSync(out) ? JSON.parse(readFileSync(out, 'utf8')) : { checks: [] };
 data.checks.push(row);
-data.checks = data.checks.slice(-3000); // about two months at one check every 30 minutes
+data.checks = data.checks.slice(-3000); // a few months of checks
 writeFileSync(out, JSON.stringify(data));
 console.log(row);
 if (!row.ok) process.exitCode = 1; // a red run in the Actions tab is the alert

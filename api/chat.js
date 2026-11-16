@@ -37,7 +37,7 @@ Projects:
 
 Skills: Python, Java, SQL, R, JavaScript, Bash. Next.js, React, Node.js, Flask, Socket.io, REST APIs, WebSockets. PostgreSQL, PostGIS, SQLite, pandas, NumPy, ETL pipelines, query optimisation. Git, GitHub Actions, Vercel, Jira, Agile.
 
-This website: static HTML on Vercel, built from GitHub. Every push runs Lighthouse CI (three runs, median must clear 90 performance and 95 accessibility), HTML validation and a link check. An uptime check runs every 30 minutes and feeds a public status page.
+This website: static HTML on Vercel, built from GitHub. Every push runs Lighthouse CI (three runs, median must clear 90 performance and 95 accessibility), HTML validation and a link check. A scheduled uptime check runs on GitHub Actions and feeds a public status page.
 
 Contact: abtaheeislam@gmail.com, linkedin.com/in/abtahee-islam, github.com/FromScratchToDataScientist. Resume at /CVA.pdf.
 `;
